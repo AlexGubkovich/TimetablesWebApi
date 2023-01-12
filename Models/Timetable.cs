@@ -1,0 +1,26 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using TimetablesProject.Data;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.OpenApi;
+using Microsoft.AspNetCore.Http.HttpResults;
+using System.ComponentModel.DataAnnotations;
+
+namespace TimetablesProject.Models
+{
+    public class Timetable
+    {
+        public int Id { get; set; }
+
+        public DayOfWeek Date { get; set; }
+
+        public int GroupId { get; set; }
+        public Group Group { get; set; }
+
+        public List<Lesson> Lessons { get; set; }
+        public List<Subject> Subjects { get; set; }
+    }
+}
