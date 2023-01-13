@@ -20,7 +20,8 @@ namespace TimetablesProject.Models
         public int GroupId { get; set; }
         public Group Group { get; set; }
 
-        public List<Lesson> Lessons { get; set; }
+        public List<Class> Classes { get; set; }
+
         public List<Subject> Subjects { get; set; }
     }
 }

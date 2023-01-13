@@ -6,7 +6,6 @@ using System.Text.RegularExpressions;
 using TimetablesProject.Data;
 using TimetablesProject.Models;
 using TimetablesProject.Models.DTO;
-using Group = TimetablesProject.Models.Group;
 
 namespace TimetablesProject.Controllers
 {
@@ -28,7 +27,7 @@ namespace TimetablesProject.Controllers
         {
             var ff = RouteData.Values.Values.FirstOrDefault();
             var timetables = await context.Timetables.Where(t => t.GroupId == groupId)
-                .Include(p => p.Lessons)
+                .Include(p => p.Classes)
                 .Include(p => p.Subjects).ThenInclude(p => p.Teacher)
                 .ToListAsync();
 
