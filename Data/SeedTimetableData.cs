@@ -11,6 +11,10 @@ namespace TimetablesProject.Data
             {
                 var provider = scope.ServiceProvider;
                 var databaseContext = provider.GetRequiredService<TimetableDbContext>();
+
+                databaseContext.Database.EnsureDeleted();
+                databaseContext.Database.EnsureCreated();
+
                 databaseContext.Database.Migrate();
 
                 await AddEntities(databaseContext);
