@@ -1,4 +1,5 @@
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Infrastructure;
 using TimetablesProject.Models;
 
 namespace TimetablesProject.Data
@@ -12,8 +13,13 @@ namespace TimetablesProject.Data
                 var provider = scope.ServiceProvider;
                 var databaseContext = provider.GetRequiredService<TimetableDbContext>();
 
-                databaseContext.Database.EnsureDeleted();
-                databaseContext.Database.EnsureCreated();
+                //databaseContext.ChangeTracker
+                //    .Entries()
+                //    .ToList()
+                //    .ForEach(e => e.State = EntityState.Detached);
+
+                //databaseContext.Database.EnsureDeleted();
+                //databaseContext.Database.EnsureCreated();
 
                 databaseContext.Database.Migrate();
 
