@@ -9,8 +9,8 @@ on:
   pull_request:
     branches: [ "master" ]
 env:
-  app-name: MyTimetablesApp
-  rg-name: TimetableAppsGroup
+  app-name: "MyTimetablesApp"
+  rg-name: "TimetableAppsGroup"
 
 jobs:
   build:
