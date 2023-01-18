@@ -9,8 +9,8 @@ on:
   pull_request:
     branches: [ "master" ]
 env:
-  app-name: "MyTimetablesApp1"
-  rg-name: "DefaultResourceGroup-EUS"
+  app-name: "MyTimetablesApp"
+
 
 jobs:
   build:
