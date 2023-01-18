@@ -9,7 +9,7 @@ on:
   pull_request:
     branches: [ "master" ]
 env:
-  app-name: "MyTimetablesApp"
+  app-name: "MyTimetablesApp1"
   rg-name: "TimetableAppsGroup"
 
 jobs:
