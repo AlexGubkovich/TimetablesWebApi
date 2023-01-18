@@ -5,8 +5,6 @@ using System.Text;
 using System.Threading.Tasks;
 using TimetablesProject.Data;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.AspNetCore.OpenApi;
-using Microsoft.AspNetCore.Http.HttpResults;
 using System.ComponentModel.DataAnnotations;
 
 namespace TimetablesProject.Models

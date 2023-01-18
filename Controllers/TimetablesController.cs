@@ -29,6 +29,7 @@ namespace TimetablesProject.Controllers
             var timetables = await context.Timetables.Where(t => t.GroupId == groupId)
                 .Include(p => p.Classes)
                 .Include(p => p.Subjects).ThenInclude(p => p.Teacher)
+                .AsSplitQuery()
                 .ToListAsync();
 
             if(timetables.Count > 0)
