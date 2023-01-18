@@ -8,6 +8,9 @@ on:
     branches: [ "master" ]
   pull_request:
     branches: [ "master" ]
+env:
+  app-name: MyTimetablesApp
+  rg-name: TimetableAppsGroup
 
 jobs:
   build:
@@ -34,3 +37,34 @@ jobs:
         name: website
         path: website/**
         if-no-files-found: error
+        
+  deploy_staging:
+      needs: build
+      runs-on: ubuntu-latest
+
+      environment:
+        name: PRE-PROD
+        url: ${{ steps.deploywebapp.outputs.webapp-url }}
+
+      steps:
+      - name: Download a Build Artifact
+        uses: actions/download-artifact@v3
+        with:
+          name: website
+          path: website
+
+      - name: Login via Azure CLI
+        uses: azure/login@v1
+        with:
+          creds: ${{ secrets.AZURE_CREDENTIALS }}
+
+      - name: Deploy web app
+        id: deploywebapp
+        uses: azure/webapps-deploy@v2
+        with:
+          app-name: ${{ env.app-name }}
+          slot-name: staging
+          package: website
+
+      - name: az cli logout
+        run: az logout
