@@ -13,15 +13,15 @@ namespace TimetablesProject.Data
                 var provider = scope.ServiceProvider;
                 var databaseContext = provider.GetRequiredService<TimetableDbContext>();
 
-                //databaseContext.ChangeTracker
-                //    .Entries()
-                //    .ToList()
-                //    .ForEach(e => e.State = EntityState.Detached);
+                databaseContext.ChangeTracker
+                    .Entries()
+                    .ToList()
+                    .ForEach(e => e.State = EntityState.Detached);
 
-                //databaseContext.Database.EnsureDeleted();
-                //databaseContext.Database.EnsureCreated();
+                databaseContext.Database.EnsureDeleted();
+                databaseContext.Database.EnsureCreated();
 
-                databaseContext.Database.Migrate();
+                //databaseContext.Database.Migrate();
 
                 await AddEntities(databaseContext);
             }
