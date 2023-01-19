@@ -6,7 +6,7 @@ namespace TimetablesProject.Models.DTO
     {
         public DayOfWeek Date { get; set; }
 
-        public List<Class> Classes { get; set; }
+        public List<ClassDTO> Classes { get; set; }
 
         public List<Subject> Subjects { get; set; }
     }

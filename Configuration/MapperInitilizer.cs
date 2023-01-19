@@ -8,7 +8,17 @@ namespace TimetablesProject.Configurations
     {
         public MapperInitilizer()
         {
+            AllowNullCollections = true;
+
             CreateMap<Timetable, TimetableDTO>().ReverseMap();
+            CreateMap<Subject, SubjectDTO>().ReverseMap();
+            CreateMap<Teacher, TeacherDTO>().ReverseMap();
+            CreateMap<Class, ClassDTO>().ReverseMap();
+
+            CreateMap<CallSchedule, CallScheduleDTO>().ReverseMap();
+            CreateMap<Lesson, LessonDTO>().ReverseMap();
+
+            
         }
     }
 }

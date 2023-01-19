@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using TimetablesProject.Data;
 using TimetablesProject.Models;
+using TimetablesProject.Models.DTO;
 
 namespace TimetablesProject.Controllers
 {
@@ -11,11 +12,12 @@ namespace TimetablesProject.Controllers
     [ApiController]
     public class CallSchedulesController : ControllerBase
     {
+        private readonly IMapper mapper;
         private readonly TimetableDbContext context;
 
-        public CallSchedulesController(TimetableDbContext context)
+        public CallSchedulesController(TimetableDbContext context, IMapper mapper)
         {
-            //this.mapper = mapper;
+            this.mapper = mapper;
             this.context = context;
         }
 
@@ -26,7 +28,8 @@ namespace TimetablesProject.Controllers
 
             if(callSchedule != null)
             {
-                return Ok(callSchedule);
+                CallScheduleDTO callScheduleDTO = mapper.Map<CallScheduleDTO>(callSchedule);
+                return Ok(callScheduleDTO);
             }
 
             return NoContent();

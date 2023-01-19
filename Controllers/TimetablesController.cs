@@ -34,7 +34,7 @@ namespace TimetablesProject.Controllers
 
             if(timetables.Count > 0)
             {
-                var timetablesDTO = mapper.Map<IEnumerable<Timetable>, IEnumerable<TimetableDTO>>(timetables);
+                IEnumerable<TimetableDTO> timetablesDTO = mapper.Map<IEnumerable<TimetableDTO>>(timetables);
          
                 return Ok(timetablesDTO);
             }
