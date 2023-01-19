@@ -8,6 +8,7 @@
 
   <ItemGroup>
     <Folder Include="Models\DTO\" />
+	<Folder Include="App_Database\" />
   </ItemGroup>
 
   <ItemGroup>
