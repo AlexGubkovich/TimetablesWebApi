@@ -12,7 +12,7 @@ builder.Services.AddControllers()
     .AddNewtonsoftJson(x => x.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore);
 
 builder.Services.AddDbContext<TimetableDbContext>(
-    options => options.UseSqlite(builder.Configuration.GetConnectionString("WebApiDatabase")));
+    options => options.UseSqlite(builder.Configuration.GetConnectionString("DefaultSQLiteConnection")));
 
 builder.Services.AddAutoMapper(typeof(MapperInitilizer));
 

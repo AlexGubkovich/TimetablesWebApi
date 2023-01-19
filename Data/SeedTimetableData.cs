@@ -15,7 +15,7 @@ namespace TimetablesProject.Data
 
                 databaseContext.Database.Migrate();
 
-                //await AddEntities(databaseContext);
+                await AddEntities(databaseContext);
             }
         }
 
