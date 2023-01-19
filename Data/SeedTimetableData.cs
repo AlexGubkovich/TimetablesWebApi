@@ -11,11 +11,17 @@ namespace TimetablesProject.Data
             using (var scope = application.Services.CreateScope())
             {
                 var provider = scope.ServiceProvider;
-                var databaseContext = provider.GetRequiredService<TimetableDbContext>();
+                using (var databaseContext = provider.GetRequiredService<TimetableDbContext>())
+                {
+                    using (var transaction = databaseContext.Database.BeginTransaction())
+                        {
+                        databaseContext.Database.Migrate();
 
-                databaseContext.Database.Migrate();
+                        await AddEntities(databaseContext);
 
-                await AddEntities(databaseContext);
+                        transaction.Commit();
+                    }
+                }
             }
         }
 
