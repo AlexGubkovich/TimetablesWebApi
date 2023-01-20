@@ -3,9 +3,10 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using System.Linq;
 using TimetablesProject.Data;
 using TimetablesProject.Models;
-using TimetablesProject.Models.DTO;
+using TimetablesProject.Models.DTO.CallScheduleDTO;
 
 namespace TimetablesProject.Controllers
 {
@@ -74,34 +75,30 @@ namespace TimetablesProject.Controllers
         }
 
         [HttpPut]
-        public async Task<ActionResult> UpdateCallSchedule(CallSchedule UpdateCallSchedule)
+        public async Task<ActionResult> UpdateCallSchedule(UpdateCallScheduleDTO UpdateCallSchedule)
         {
-            try
+            var callSchedule = await context.CallSchedules.Include(p => p.Lessons).FirstOrDefaultAsync(p => p.Id == UpdateCallSchedule.Id);
+            if(callSchedule != null)
             {
-                var callSchedule = await context.CallSchedules.FindAsync(UpdateCallSchedule.Id);
-                if(callSchedule != null)
+                await ChangeIsActive(callSchedule, UpdateCallSchedule.IsActive);
+
+                callSchedule.Name = UpdateCallSchedule.Name;
+                callSchedule.IsActive = UpdateCallSchedule.IsActive;
+
+                var lessons = mapper.Map<List<Lesson>>(UpdateCallSchedule.Lessons);
+                if(!callSchedule.Lessons.SequenceEqual(lessons))
                 {
-                    await ChangeIsActive(callSchedule, UpdateCallSchedule.IsActive);
-
-                    callSchedule.Name = UpdateCallSchedule.Name;
-                    callSchedule.IsActive = UpdateCallSchedule.IsActive;
-                    //callSchedule.Lessons = null;
-
-                    context.CallSchedules.Update(callSchedule);
-
-                    await context.SaveChangesAsync();
-
-                    return Ok();
-                }
-                else
-                {
-                    return NotFound();
+                    context.Lessons.AddRange(lessons);
+                    callSchedule.Lessons = lessons;
                 }
 
+                context.CallSchedules.Update(callSchedule);
 
+                await context.SaveChangesAsync();
 
+                return Ok();
             }
-            catch (DbUpdateException)
+            else
             {
                 return NotFound();
             }
@@ -124,7 +121,7 @@ namespace TimetablesProject.Controllers
             return Ok();
         }
 
-        [HttpDelete]
+        [HttpDelete()]
         public async Task<ActionResult> DeleteCallSchedule(int Id)
         {
             var callSchedule = await context.CallSchedules.FindAsync(Id);

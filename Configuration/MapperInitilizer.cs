@@ -1,6 +1,7 @@
 using AutoMapper;
 using TimetablesProject.Models;
 using TimetablesProject.Models.DTO;
+using TimetablesProject.Models.DTO.CallScheduleDTO;
 
 namespace TimetablesProject.Configurations
 {

@@ -1,4 +1,4 @@
-﻿namespace TimetablesProject.Models.DTO
+﻿namespace TimetablesProject.Models.DTO.CallScheduleDTO
 {
     public class CallScheduleDTO
     {

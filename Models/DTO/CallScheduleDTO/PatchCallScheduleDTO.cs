@@ -1,6 +1,6 @@
 ﻿using Microsoft.Build.Framework;
 
-namespace TimetablesProject.Models.DTO
+namespace TimetablesProject.Models.DTO.CallScheduleDTO
 {
     public class PatchCallScheduleDTO
     {
