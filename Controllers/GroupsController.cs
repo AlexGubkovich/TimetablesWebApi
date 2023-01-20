@@ -31,5 +31,44 @@ namespace TimetablesProject.Controllers
 
             return NoContent();
         }
+
+        [HttpPost]
+        public async Task<ActionResult<IEnumerable<Group>>> CreateGroup()
+        {
+            var groups = await context.Groups.ToListAsync();
+
+            if (groups.Count > 0)
+            {
+                return Ok(groups);
+            }
+
+            return NoContent();
+        }
+
+        [HttpPut]
+        public async Task<ActionResult<IEnumerable<Group>>> UpdateGroup()
+        {
+            var groups = await context.Groups.ToListAsync();
+
+            if (groups.Count > 0)
+            {
+                return Ok(groups);
+            }
+
+            return NoContent();
+        }
+
+        [HttpDelete]
+        public async Task<ActionResult<IEnumerable<Group>>> DeleteGroup()
+        {
+            var groups = await context.Groups.ToListAsync();
+
+            if (groups.Count > 0)
+            {
+                return Ok(groups);
+            }
+
+            return NoContent();
+        }
     }
 }

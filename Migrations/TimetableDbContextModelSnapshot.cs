@@ -15,7 +15,7 @@ namespace TimetablesProject.Migrations
         protected override void BuildModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
-            modelBuilder.HasAnnotation("ProductVersion", "7.0.1");
+            modelBuilder.HasAnnotation("ProductVersion", "7.0.2");
 
             modelBuilder.Entity("CallScheduleLesson", b =>
                 {
@@ -76,7 +76,10 @@ namespace TimetablesProject.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("CallSedules");
+                    b.HasIndex("Name")
+                        .IsUnique();
+
+                    b.ToTable("CallSchedules");
                 });
 
             modelBuilder.Entity("TimetablesProject.Models.Class", b =>
@@ -89,9 +92,6 @@ namespace TimetablesProject.Migrations
                         .HasColumnType("INTEGER");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("Number")
-                        .IsUnique();
 
                     b.ToTable("Classes");
                 });
@@ -125,9 +125,6 @@ namespace TimetablesProject.Migrations
                         .HasColumnType("TEXT");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("Start", "End")
-                        .IsUnique();
 
                     b.ToTable("Lessons");
                 });
@@ -165,6 +162,9 @@ namespace TimetablesProject.Migrations
                         .HasColumnType("TEXT");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("FullName")
+                        .IsUnique();
 
                     b.ToTable("Teachers");
                 });

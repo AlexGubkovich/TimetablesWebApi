@@ -1,4 +1,5 @@
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.ChangeTracking;
 using TimetablesProject.Models;
 
 namespace TimetablesProject.Data
@@ -9,18 +10,18 @@ namespace TimetablesProject.Data
         public DbSet<Group> Groups { get; set; }
         public DbSet<Subject> Subjects { get; set; }
         public DbSet<Teacher> Teachers { get; set; }
-
+        
         public DbSet<Class> Classes { get; set; }
         public DbSet<Lesson> Lessons { get; set; }
-        public DbSet<CallSchedule> CallSedules { get; set; }
+        public DbSet<CallSchedule> CallSchedules { get; set; }
 
         public TimetableDbContext(DbContextOptions<TimetableDbContext> options) : base(options) { }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<Lesson>().HasIndex(p => new { p.Start, p.End }).IsUnique();
             modelBuilder.Entity<Timetable>().HasIndex(p => new { p.Date, p.GroupId }).IsUnique();
-            modelBuilder.Entity<Class>().HasIndex(p => p.Number).IsUnique();
+            modelBuilder.Entity<CallSchedule>().HasIndex(p => p.Name).IsUnique();
+            modelBuilder.Entity<Teacher>().HasIndex(p => p.FullName).IsUnique();
 
             modelBuilder.Entity<Timetable>()
                 .HasMany(p => p.Subjects)

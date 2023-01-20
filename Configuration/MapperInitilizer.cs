@@ -16,9 +16,8 @@ namespace TimetablesProject.Configurations
             CreateMap<Class, ClassDTO>().ReverseMap();
 
             CreateMap<CallSchedule, CallScheduleDTO>().ReverseMap();
-            CreateMap<Lesson, LessonDTO>().ReverseMap();
-
-            
+            CreateMap<CallSchedule, CreateCallScheduleDTO>().ReverseMap();
+            CreateMap<Lesson, LessonDTO>().ReverseMap(); 
         }
     }
 }

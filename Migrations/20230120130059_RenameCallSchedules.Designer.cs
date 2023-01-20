@@ -11,14 +11,14 @@ using TimetablesProject.Data;
 namespace TimetablesProject.Migrations
 {
     [DbContext(typeof(TimetableDbContext))]
-    [Migration("20230113164948_AddCallShedulesAndClasses")]
-    partial class AddCallShedulesAndClasses
+    [Migration("20230120130059_RenameCallSchedules")]
+    partial class RenameCallSchedules
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
-            modelBuilder.HasAnnotation("ProductVersion", "7.0.1");
+            modelBuilder.HasAnnotation("ProductVersion", "7.0.2");
 
             modelBuilder.Entity("CallScheduleLesson", b =>
                 {
@@ -79,6 +79,9 @@ namespace TimetablesProject.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("Name")
+                        .IsUnique();
+
                     b.ToTable("CallSchedules");
                 });
 
@@ -92,9 +95,6 @@ namespace TimetablesProject.Migrations
                         .HasColumnType("INTEGER");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("Number")
-                        .IsUnique();
 
                     b.ToTable("Classes");
                 });
@@ -128,9 +128,6 @@ namespace TimetablesProject.Migrations
                         .HasColumnType("TEXT");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("Start", "End")
-                        .IsUnique();
 
                     b.ToTable("Lessons");
                 });
@@ -168,6 +165,9 @@ namespace TimetablesProject.Migrations
                         .HasColumnType("TEXT");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("FullName")
+                        .IsUnique();
 
                     b.ToTable("Teachers");
                 });

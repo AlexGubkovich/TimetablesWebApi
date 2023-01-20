@@ -38,17 +38,17 @@ namespace TimetablesProject.Data
                 lessons = context.Lessons.ToList();
             }
 
-            List<CallSchedule> callSedules;
-            if (!context.CallSedules.Any())
+            List<CallSchedule> CallSchedules;
+            if (!context.CallSchedules.Any())
             {
-                callSedules = new List<CallSchedule> {
+                CallSchedules = new List<CallSchedule> {
                 new CallSchedule { Lessons = new List<Lesson>{ lessons[0], lessons[1], lessons[2], lessons[3], }, IsActive = true, Name = "Весенне расписание" }
             };
-                context.CallSedules.AddRange(callSedules);
+                context.CallSchedules.AddRange(CallSchedules);
             }
             else
             {
-                callSedules = context.CallSedules.ToList();
+                CallSchedules = context.CallSchedules.ToList();
             }
 
 

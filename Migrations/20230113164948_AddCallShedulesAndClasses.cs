@@ -14,7 +14,7 @@ namespace TimetablesProject.Migrations
                 name: "LessonTimetable");
 
             migrationBuilder.CreateTable(
-                name: "CallSedules",
+                name: "CallSchedules",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "INTEGER", nullable: false)
@@ -24,7 +24,7 @@ namespace TimetablesProject.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_CallSedules", x => x.Id);
+                    table.PrimaryKey("PK_CallSchedules", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -51,9 +51,9 @@ namespace TimetablesProject.Migrations
                 {
                     table.PrimaryKey("PK_CallScheduleLesson", x => new { x.CallScheduleId, x.LessonsId });
                     table.ForeignKey(
-                        name: "FK_CallScheduleLesson_CallSedules_CallScheduleId",
+                        name: "FK_CallScheduleLesson_CallSchedules_CallScheduleId",
                         column: x => x.CallScheduleId,
-                        principalTable: "CallSedules",
+                        principalTable: "CallSchedules",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
@@ -115,7 +115,7 @@ namespace TimetablesProject.Migrations
                 name: "ClassTimetable");
 
             migrationBuilder.DropTable(
-                name: "CallSedules");
+                name: "CallSchedules");
 
             migrationBuilder.DropTable(
                 name: "Classes");

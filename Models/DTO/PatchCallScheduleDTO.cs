@@ -2,12 +2,12 @@
 
 namespace TimetablesProject.Models.DTO
 {
-    public class LessonDTO
+    public class PatchCallScheduleDTO
     {
         [Required]
-        public TimeSpan Start { get; set; }
+        public int Id { get; set; }
 
         [Required]
-        public TimeSpan End { get; set; }
+        public bool IsActive { get; set; }
     }
 }
