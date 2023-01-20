@@ -78,12 +78,26 @@ namespace TimetablesProject.Controllers
         {
             try
             {
-                UpdateCallSchedule.Lessons = null;
-                await ChangeIsActive(UpdateCallSchedule, UpdateCallSchedule.IsActive);
+                var callSchedule = await context.CallSchedules.FindAsync(UpdateCallSchedule.Id);
+                if(callSchedule != null)
+                {
+                    await ChangeIsActive(callSchedule, UpdateCallSchedule.IsActive);
 
-                context.CallSchedules.Update(UpdateCallSchedule);
+                    callSchedule.Name = UpdateCallSchedule.Name;
+                    callSchedule.IsActive = UpdateCallSchedule.IsActive;
+                    //callSchedule.Lessons = null;
 
-                await context.SaveChangesAsync();
+                    context.CallSchedules.Update(callSchedule);
+
+                    await context.SaveChangesAsync();
+
+                    return Ok();
+                }
+                else
+                {
+                    return NotFound();
+                }
+
 
 
             }
@@ -91,21 +105,6 @@ namespace TimetablesProject.Controllers
             {
                 return NotFound();
             }
-
-
-            //if (callScheduleToUpdate != null)
-            //{
-            //    callScheduleToUpdate = UpdateCallSchedule;
-
-            //    context.Lessons.UpdateRange(callScheduleToUpdate.Lessons);
-            //    callScheduleToUpdate.Lessons = null;
-
-            //    context.CallSchedules.Update(callScheduleToUpdate);
-            //    await context.SaveChangesAsync();
-
-            //    await ChangeIsActive(callScheduleToUpdate, callScheduleToUpdate.IsActive);
-
-            return Ok();
         }
 
         [HttpPatch]
