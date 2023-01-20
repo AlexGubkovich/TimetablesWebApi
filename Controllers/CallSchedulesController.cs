@@ -79,10 +79,13 @@ namespace TimetablesProject.Controllers
             try
             {
                 UpdateCallSchedule.Lessons = null;
+                await ChangeIsActive(UpdateCallSchedule, UpdateCallSchedule.IsActive);
+
                 context.CallSchedules.Update(UpdateCallSchedule);
+
                 await context.SaveChangesAsync();
 
-                await ChangeIsActive(UpdateCallSchedule, UpdateCallSchedule.IsActive);
+
             }
             catch (DbUpdateException)
             {
