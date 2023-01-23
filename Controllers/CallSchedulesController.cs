@@ -105,7 +105,7 @@ namespace TimetablesProject.Controllers
         }
 
         [HttpPatch]
-        public async Task<ActionResult> SetCallScheduleActive(int Id, bool IsActive)
+        public async Task<ActionResult> SetActiveCallSchedule(int Id, bool IsActive)
         {
             var callScheduleCurrent = await context.CallSchedules.FindAsync(Id);
 

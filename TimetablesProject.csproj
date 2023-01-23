@@ -8,6 +8,7 @@
 
   <ItemGroup>
     <Folder Include="App_Database\" />
+    <Folder Include="Repository\" />
   </ItemGroup>
 	
   <Target Name="BeforeBuild">

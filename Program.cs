@@ -19,7 +19,12 @@ builder.Services.AddDbContext<TimetableDbContext>(
 
 builder.Services.AddAutoMapper(typeof(MapperInitilizer));
 
-builder.Services.AddCors();
+builder.Services.AddCors(o => {
+    o.AddPolicy("AllowAll", builder =>
+        builder.AllowAnyOrigin()
+            .AllowAnyMethod()
+            .AllowAnyHeader());
+});
 
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
@@ -29,20 +34,22 @@ var app = builder.Build();
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
-    app.UseSwagger();
-    app.UseSwaggerUI();
+    app.UseDeveloperExceptionPage();
 }
+
+app.UseSwagger();
+app.UseSwaggerUI();
 
 app.UseCustomExceptionHandler();
 
-app.UseCors(builder => builder.AllowAnyOrigin());
-
 app.UseHttpsRedirection();
+
+app.UseCors("AllowAll");
 
 app.UseAuthorization();
 
 app.MapControllers();
 
-app.GenerateSeedTimetableDataAsync().Wait();
+//app.GenerateSeedTimetableDataAsync().Wait();
 
 app.Run();
