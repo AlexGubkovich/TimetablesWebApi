@@ -5,58 +5,82 @@ using TimetablesProject.Configurations;
 using TimetablesProject.Middleware;
 using TimetablesProject.IRepository;
 using TimetablesProject.Repository;
+using Serilog;
 
-var builder = WebApplication.CreateBuilder(args);
+Log.Logger = new LoggerConfiguration()
+    .WriteTo.Console()
+    .CreateLogger();
 
-// Add services to the container.
+try
+{
+    Log.Information("Starting web host");
 
-builder.Services.AddControllers()
-    .AddNewtonsoftJson(x => x.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore);
+    var builder = WebApplication.CreateBuilder(args);
 
-builder.Services.AddDbContext<TimetableDbContext>(
-    options => {
-        options.UseSqlite(builder.Configuration.GetConnectionString("DefaultSQLiteConnection"));
-        if (builder.Environment.IsDevelopment())
-        {
-            options.EnableSensitiveDataLogging();
-        }
+    builder.Services.AddControllers()
+        .AddNewtonsoftJson(x => x.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore);
+
+    builder.Host.UseSerilog((ctx, lc) => lc
+        .WriteTo.Console());
+
+    builder.Services.AddDbContext<TimetableDbContext>(
+        options => {
+            options.UseSqlite(builder.Configuration.GetConnectionString("DefaultSQLiteConnection"));
+            if (builder.Environment.IsDevelopment())
+            {
+                options.EnableSensitiveDataLogging();
+            }
+        });
+
+    builder.Services.AddScoped<IScheduleRepository, ScheduleRepository>();
+
+    builder.Services.AddAutoMapper(typeof(MapperInitilizer));
+
+    builder.Services.AddCors(o => {
+        o.AddPolicy("AllowAll", builder =>
+            builder.AllowAnyOrigin()
+                .AllowAnyMethod()
+                .AllowAnyHeader());
     });
 
-builder.Services.AddScoped<IScheduleRepository, ScheduleRepository>();
+    builder.Services.AddEndpointsApiExplorer();
+    builder.Services.AddSwaggerGen();
 
-builder.Services.AddAutoMapper(typeof(MapperInitilizer));
+    var app = builder.Build();
 
-builder.Services.AddCors(o => {
-    o.AddPolicy("AllowAll", builder =>
-        builder.AllowAnyOrigin()
-            .AllowAnyMethod()
-            .AllowAnyHeader());
-});
+    if (app.Environment.IsDevelopment())
+    {
+        app.UseDeveloperExceptionPage();
+    }
+    else
+    {
+        app.UseHsts();
+    }
 
-builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
+    app.UseSwagger();
+    app.UseSwaggerUI();
 
-var app = builder.Build();
+    app.UseCustomExceptionHandler();
 
-// Configure the HTTP request pipeline.
-if (app.Environment.IsDevelopment())
+    app.UseHttpsRedirection();
+
+    app.UseCors("AllowAll");
+
+    app.UseAuthorization();
+
+    app.MapControllers();
+
+    //app.GenerateSeedTimetableDataAsync().Wait();
+
+    app.Run();
+}
+catch (Exception ex)
 {
-    app.UseDeveloperExceptionPage();
+    Log.Fatal(ex, "Host terminated unexpectedly");
+}
+finally
+{
+    Log.CloseAndFlush();
 }
 
-app.UseSwagger();
-app.UseSwaggerUI();
 
-app.UseCustomExceptionHandler();
-
-app.UseHttpsRedirection();
-
-app.UseCors("AllowAll");
-
-app.UseAuthorization();
-
-app.MapControllers();
-
-//app.GenerateSeedTimetableDataAsync().Wait();
-
-app.Run();
