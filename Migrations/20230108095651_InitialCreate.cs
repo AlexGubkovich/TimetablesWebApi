@@ -12,7 +12,7 @@ namespace TimetablesProject.Migrations
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.CreateTable(
-                name: "CallSchedules",
+                name: "Schedules",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "INTEGER", nullable: false)
@@ -21,7 +21,7 @@ namespace TimetablesProject.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_CallSchedules", x => x.Id);
+                    table.PrimaryKey("PK_Schedules", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -58,15 +58,15 @@ namespace TimetablesProject.Migrations
                         .Annotation("Sqlite:Autoincrement", true),
                     Start = table.Column<DateTime>(type: "TEXT", nullable: false),
                     End = table.Column<DateTime>(type: "TEXT", nullable: false),
-                    CallScheduleId = table.Column<int>(type: "INTEGER", nullable: true)
+                    ScheduleId = table.Column<int>(type: "INTEGER", nullable: true)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Lesson", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Lesson_CallSchedules_CallScheduleId",
-                        column: x => x.CallScheduleId,
-                        principalTable: "CallSchedules",
+                        name: "FK_Lesson_Schedules_ScheduleId",
+                        column: x => x.ScheduleId,
+                        principalTable: "Schedules",
                         principalColumn: "Id");
                 });
 
@@ -115,9 +115,9 @@ namespace TimetablesProject.Migrations
                 });
 
             migrationBuilder.CreateIndex(
-                name: "IX_Lesson_CallScheduleId",
+                name: "IX_Lesson_ScheduleId",
                 table: "Lesson",
-                column: "CallScheduleId");
+                column: "ScheduleId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Subjects_TeacherId",
@@ -145,7 +145,7 @@ namespace TimetablesProject.Migrations
                 name: "Subjects");
 
             migrationBuilder.DropTable(
-                name: "CallSchedules");
+                name: "Schedules");
 
             migrationBuilder.DropTable(
                 name: "Teachers");

@@ -1,6 +1,8 @@
-﻿namespace TimetablesProject.Models.DTO.CallScheduleDTO
+﻿using TimetablesProject.Data;
+
+namespace TimetablesProject.Models.DTO.ScheduleDTO
 {
-    public class UpdateCallScheduleDTO
+    public class UpdateScheduleDTO
     {
         public int Id { get; set; }
         public string Name { get; set; }

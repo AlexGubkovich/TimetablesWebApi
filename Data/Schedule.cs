@@ -1,6 +1,6 @@
-﻿namespace TimetablesProject.Models
+﻿namespace TimetablesProject.Data
 {
-    public class CallSchedule
+    public class Schedule
     {
         public int Id { get; set; }
         public string Name { get; set; }

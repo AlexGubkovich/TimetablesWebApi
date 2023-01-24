@@ -3,6 +3,8 @@ using TimetablesProject.Data;
 using TimetablesProject.Controllers;
 using TimetablesProject.Configurations;
 using TimetablesProject.Middleware;
+using TimetablesProject.IRepository;
+using TimetablesProject.Repository;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -14,8 +16,13 @@ builder.Services.AddControllers()
 builder.Services.AddDbContext<TimetableDbContext>(
     options => {
         options.UseSqlite(builder.Configuration.GetConnectionString("DefaultSQLiteConnection"));
-        options.EnableSensitiveDataLogging();
+        if (builder.Environment.IsDevelopment())
+        {
+            options.EnableSensitiveDataLogging();
+        }
     });
+
+builder.Services.AddScoped<IScheduleRepository, ScheduleRepository>();
 
 builder.Services.AddAutoMapper(typeof(MapperInitilizer));
 

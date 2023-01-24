@@ -14,7 +14,7 @@ namespace TimetablesProject.Migrations
                 name: "LessonTimetable");
 
             migrationBuilder.CreateTable(
-                name: "CallSchedules",
+                name: "Schedules",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "INTEGER", nullable: false)
@@ -24,7 +24,7 @@ namespace TimetablesProject.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_CallSchedules", x => x.Id);
+                    table.PrimaryKey("PK_Schedules", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -41,23 +41,23 @@ namespace TimetablesProject.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "CallScheduleLesson",
+                name: "ScheduleLesson",
                 columns: table => new
                 {
-                    CallScheduleId = table.Column<int>(type: "INTEGER", nullable: false),
+                    ScheduleId = table.Column<int>(type: "INTEGER", nullable: false),
                     LessonsId = table.Column<int>(type: "INTEGER", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_CallScheduleLesson", x => new { x.CallScheduleId, x.LessonsId });
+                    table.PrimaryKey("PK_ScheduleLesson", x => new { x.ScheduleId, x.LessonsId });
                     table.ForeignKey(
-                        name: "FK_CallScheduleLesson_CallSchedules_CallScheduleId",
-                        column: x => x.CallScheduleId,
-                        principalTable: "CallSchedules",
+                        name: "FK_ScheduleLesson_Schedules_ScheduleId",
+                        column: x => x.ScheduleId,
+                        principalTable: "Schedules",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_CallScheduleLesson_Lessons_LessonsId",
+                        name: "FK_ScheduleLesson_Lessons_LessonsId",
                         column: x => x.LessonsId,
                         principalTable: "Lessons",
                         principalColumn: "Id",
@@ -89,8 +89,8 @@ namespace TimetablesProject.Migrations
                 });
 
             migrationBuilder.CreateIndex(
-                name: "IX_CallScheduleLesson_LessonsId",
-                table: "CallScheduleLesson",
+                name: "IX_ScheduleLesson_LessonsId",
+                table: "ScheduleLesson",
                 column: "LessonsId");
 
             migrationBuilder.CreateIndex(
@@ -109,13 +109,13 @@ namespace TimetablesProject.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "CallScheduleLesson");
+                name: "ScheduleLesson");
 
             migrationBuilder.DropTable(
                 name: "ClassTimetable");
 
             migrationBuilder.DropTable(
-                name: "CallSchedules");
+                name: "Schedules");
 
             migrationBuilder.DropTable(
                 name: "Classes");

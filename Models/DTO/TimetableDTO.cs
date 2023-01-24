@@ -1,4 +1,5 @@
 using System.ComponentModel.DataAnnotations;
+using TimetablesProject.Data;
 
 namespace TimetablesProject.Models.DTO
 {

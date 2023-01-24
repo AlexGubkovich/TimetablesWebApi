@@ -11,8 +11,8 @@ namespace TimetablesProject.Migrations
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropForeignKey(
-                name: "FK_CallScheduleLesson_Lesson_LessonsId",
-                table: "CallScheduleLesson");
+                name: "FK_ScheduleLesson_Lesson_LessonsId",
+                table: "ScheduleLesson");
 
             migrationBuilder.DropPrimaryKey(
                 name: "PK_Lesson",
@@ -33,8 +33,8 @@ namespace TimetablesProject.Migrations
                 column: "Id");
 
             migrationBuilder.AddForeignKey(
-                name: "FK_CallScheduleLesson_Lessons_LessonsId",
-                table: "CallScheduleLesson",
+                name: "FK_ScheduleLesson_Lessons_LessonsId",
+                table: "ScheduleLesson",
                 column: "LessonsId",
                 principalTable: "Lessons",
                 principalColumn: "Id",
@@ -45,8 +45,8 @@ namespace TimetablesProject.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropForeignKey(
-                name: "FK_CallScheduleLesson_Lessons_LessonsId",
-                table: "CallScheduleLesson");
+                name: "FK_ScheduleLesson_Lessons_LessonsId",
+                table: "ScheduleLesson");
 
             migrationBuilder.DropPrimaryKey(
                 name: "PK_Lessons",
@@ -67,8 +67,8 @@ namespace TimetablesProject.Migrations
                 column: "Id");
 
             migrationBuilder.AddForeignKey(
-                name: "FK_CallScheduleLesson_Lesson_LessonsId",
-                table: "CallScheduleLesson",
+                name: "FK_ScheduleLesson_Lesson_LessonsId",
+                table: "ScheduleLesson",
                 column: "LessonsId",
                 principalTable: "Lesson",
                 principalColumn: "Id",

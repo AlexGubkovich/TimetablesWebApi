@@ -1,10 +1,16 @@
-﻿namespace TimetablesProject.IRepository
+﻿using TimetablesProject.Data;
+using TimetablesProject.Models;
+using TimetablesProject.Models.DTO.ScheduleDTO;
+
+namespace TimetablesProject.IRepository
 {
-    public interface ICallScheduleRepository
+    public interface IScheduleRepository
     {
-        Task GetAll();
-        Task GetActive();
-        Task Delete(int id);
-        Task Update();
+        Task<IList<Schedule>> GetAllAsync();
+        Task<Schedule> GetActiveAsync();
+        Task<RepositoryResponse> CreateAsync(Schedule Schedule);
+        Task<RepositoryResponse> SetIsActiveAsync(int id, bool IsActive);
+        Task<RepositoryResponse> UpdateAsync(Schedule updateSchedule);
+        Task<RepositoryResponse> DeleteAsync(int id);
     }
 }

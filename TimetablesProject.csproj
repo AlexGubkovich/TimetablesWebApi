@@ -8,7 +8,6 @@
 
   <ItemGroup>
     <Folder Include="App_Database\" />
-    <Folder Include="Repository\" />
   </ItemGroup>
 	
   <Target Name="BeforeBuild">
@@ -35,13 +34,6 @@
     </PackageReference>
     <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="6.0.11" />
     <PackageReference Include="Swashbuckle.AspNetCore" Version="6.5.0" />
-  </ItemGroup>
-	
-
-  <ItemGroup>
-    <None Update="App_Database\TimetablesDatabase.sqlite">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
   </ItemGroup>
 
 </Project>

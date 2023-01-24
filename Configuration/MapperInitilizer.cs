@@ -1,7 +1,7 @@
 using AutoMapper;
-using TimetablesProject.Models;
+using TimetablesProject.Data;
 using TimetablesProject.Models.DTO;
-using TimetablesProject.Models.DTO.CallScheduleDTO;
+using TimetablesProject.Models.DTO.ScheduleDTO;
 
 namespace TimetablesProject.Configurations
 {
@@ -16,8 +16,9 @@ namespace TimetablesProject.Configurations
             CreateMap<Teacher, TeacherDTO>().ReverseMap();
             CreateMap<Class, ClassDTO>().ReverseMap();
 
-            CreateMap<CallSchedule, CallScheduleDTO>().ReverseMap();
-            CreateMap<CallSchedule, CreateCallScheduleDTO>().ReverseMap();
+            CreateMap<Schedule, ScheduleDTO>().ReverseMap();
+            CreateMap<Schedule, CreateScheduleDTO>().ReverseMap();
+            CreateMap<Schedule, UpdateScheduleDTO>().ReverseMap();
             CreateMap<Lesson, LessonDTO>().ReverseMap(); 
         }
     }

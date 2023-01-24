@@ -1,6 +1,5 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
-using TimetablesProject.Models;
 
 namespace TimetablesProject.Data
 {
@@ -38,17 +37,17 @@ namespace TimetablesProject.Data
                 lessons = context.Lessons.ToList();
             }
 
-            List<CallSchedule> CallSchedules;
-            if (!context.CallSchedules.Any())
+            List<Schedule> Schedules;
+            if (!context.Schedules.Any())
             {
-                CallSchedules = new List<CallSchedule> {
-                new CallSchedule { Lessons = new List<Lesson>{ lessons[0], lessons[1], lessons[2], lessons[3], }, IsActive = true, Name = "Весенне расписание" }
+                Schedules = new List<Schedule> {
+                new Schedule { Lessons = new List<Lesson>{ lessons[0], lessons[1], lessons[2], lessons[3], }, IsActive = true, Name = "Весенне расписание" }
             };
-                context.CallSchedules.AddRange(CallSchedules);
+                context.Schedules.AddRange(Schedules);
             }
             else
             {
-                CallSchedules = context.CallSchedules.ToList();
+                Schedules = context.Schedules.ToList();
             }
 
 

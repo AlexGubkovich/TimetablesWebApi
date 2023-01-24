@@ -20,19 +20,19 @@ namespace TimetablesProject.Migrations
 #pragma warning disable 612, 618
             modelBuilder.HasAnnotation("ProductVersion", "7.0.1");
 
-            modelBuilder.Entity("CallScheduleLesson", b =>
+            modelBuilder.Entity("ScheduleLesson", b =>
                 {
-                    b.Property<int>("CallSchedulesId")
+                    b.Property<int>("SchedulesId")
                         .HasColumnType("INTEGER");
 
                     b.Property<int>("LessonsId")
                         .HasColumnType("INTEGER");
 
-                    b.HasKey("CallSchedulesId", "LessonsId");
+                    b.HasKey("SchedulesId", "LessonsId");
 
                     b.HasIndex("LessonsId");
 
-                    b.ToTable("CallScheduleLesson");
+                    b.ToTable("ScheduleLesson");
                 });
 
             modelBuilder.Entity("SubjectTimetable", b =>
@@ -50,7 +50,7 @@ namespace TimetablesProject.Migrations
                     b.ToTable("SubjectTimetable");
                 });
 
-            modelBuilder.Entity("TimetablesProject.Models.CallSchedule", b =>
+            modelBuilder.Entity("TimetablesProject.Models.Schedule", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -61,7 +61,7 @@ namespace TimetablesProject.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("CallSchedules");
+                    b.ToTable("Schedules");
                 });
 
             modelBuilder.Entity("TimetablesProject.Models.Group", b =>
@@ -159,11 +159,11 @@ namespace TimetablesProject.Migrations
                     b.ToTable("Timetables");
                 });
 
-            modelBuilder.Entity("CallScheduleLesson", b =>
+            modelBuilder.Entity("ScheduleLesson", b =>
                 {
-                    b.HasOne("TimetablesProject.Models.CallSchedule", null)
+                    b.HasOne("TimetablesProject.Models.Schedule", null)
                         .WithMany()
-                        .HasForeignKey("CallSchedulesId")
+                        .HasForeignKey("SchedulesId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 

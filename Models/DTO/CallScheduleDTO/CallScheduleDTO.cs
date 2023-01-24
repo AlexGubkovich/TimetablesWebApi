@@ -1,6 +1,6 @@
-﻿namespace TimetablesProject.Models.DTO.CallScheduleDTO
+﻿namespace TimetablesProject.Models.DTO.ScheduleDTO
 {
-    public class CallScheduleDTO
+    public class ScheduleDTO
     {
         public List<LessonDTO> Lessons { get; set; }
     }

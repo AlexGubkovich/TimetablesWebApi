@@ -20,7 +20,7 @@ namespace TimetablesProject.Migrations
 #pragma warning disable 612, 618
             modelBuilder.HasAnnotation("ProductVersion", "7.0.1");
 
-            modelBuilder.Entity("TimetablesProject.Models.CallSchedule", b =>
+            modelBuilder.Entity("TimetablesProject.Models.Schedule", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -31,7 +31,7 @@ namespace TimetablesProject.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("CallSchedules");
+                    b.ToTable("Schedules");
                 });
 
             modelBuilder.Entity("TimetablesProject.Models.Group", b =>
@@ -56,7 +56,7 @@ namespace TimetablesProject.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
-                    b.Property<int?>("CallScheduleId")
+                    b.Property<int?>("ScheduleId")
                         .HasColumnType("INTEGER");
 
                     b.Property<DateTime>("End")
@@ -67,7 +67,7 @@ namespace TimetablesProject.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("CallScheduleId");
+                    b.HasIndex("ScheduleId");
 
                     b.ToTable("Lesson");
                 });
@@ -135,9 +135,9 @@ namespace TimetablesProject.Migrations
 
             modelBuilder.Entity("TimetablesProject.Models.Lesson", b =>
                 {
-                    b.HasOne("TimetablesProject.Models.CallSchedule", null)
+                    b.HasOne("TimetablesProject.Models.Schedule", null)
                         .WithMany("Lessons")
-                        .HasForeignKey("CallScheduleId");
+                        .HasForeignKey("ScheduleId");
                 });
 
             modelBuilder.Entity("TimetablesProject.Models.Subject", b =>
@@ -162,7 +162,7 @@ namespace TimetablesProject.Migrations
                     b.Navigation("Group");
                 });
 
-            modelBuilder.Entity("TimetablesProject.Models.CallSchedule", b =>
+            modelBuilder.Entity("TimetablesProject.Models.Schedule", b =>
                 {
                     b.Navigation("Lessons");
                 });

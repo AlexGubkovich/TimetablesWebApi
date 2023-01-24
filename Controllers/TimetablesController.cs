@@ -4,7 +4,6 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System.Text.RegularExpressions;
 using TimetablesProject.Data;
-using TimetablesProject.Models;
 using TimetablesProject.Models.DTO;
 
 namespace TimetablesProject.Controllers

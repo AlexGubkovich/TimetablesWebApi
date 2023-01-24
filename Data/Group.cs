@@ -5,14 +5,14 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace TimetablesProject.Models
+namespace TimetablesProject.Data
 {
-    public class Teacher
+    public class Group
     {
         public int Id { get; set; }
 
         [Required]
         [MaxLength(255)]
-        public string FullName { get; set; } = null!;
+        public string Name { get; set; } = null!;
     }
 }

@@ -2,7 +2,6 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using TimetablesProject.Data;
-using TimetablesProject.Models;
 
 namespace TimetablesProject.Controllers
 {

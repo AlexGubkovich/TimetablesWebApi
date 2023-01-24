@@ -11,8 +11,8 @@ using TimetablesProject.Data;
 namespace TimetablesProject.Migrations
 {
     [DbContext(typeof(TimetableDbContext))]
-    [Migration("20230120130059_RenameCallSchedules")]
-    partial class RenameCallSchedules
+    [Migration("20230120130059_RenameSchedules")]
+    partial class RenameSchedules
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -20,19 +20,19 @@ namespace TimetablesProject.Migrations
 #pragma warning disable 612, 618
             modelBuilder.HasAnnotation("ProductVersion", "7.0.2");
 
-            modelBuilder.Entity("CallScheduleLesson", b =>
+            modelBuilder.Entity("ScheduleLesson", b =>
                 {
-                    b.Property<int>("CallScheduleId")
+                    b.Property<int>("ScheduleId")
                         .HasColumnType("INTEGER");
 
                     b.Property<int>("LessonsId")
                         .HasColumnType("INTEGER");
 
-                    b.HasKey("CallScheduleId", "LessonsId");
+                    b.HasKey("ScheduleId", "LessonsId");
 
                     b.HasIndex("LessonsId");
 
-                    b.ToTable("CallScheduleLesson");
+                    b.ToTable("ScheduleLesson");
                 });
 
             modelBuilder.Entity("ClassTimetable", b =>
@@ -65,7 +65,7 @@ namespace TimetablesProject.Migrations
                     b.ToTable("SubjectTimetable");
                 });
 
-            modelBuilder.Entity("TimetablesProject.Models.CallSchedule", b =>
+            modelBuilder.Entity("TimetablesProject.Models.Schedule", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -82,7 +82,7 @@ namespace TimetablesProject.Migrations
                     b.HasIndex("Name")
                         .IsUnique();
 
-                    b.ToTable("CallSchedules");
+                    b.ToTable("Schedules");
                 });
 
             modelBuilder.Entity("TimetablesProject.Models.Class", b =>
@@ -194,11 +194,11 @@ namespace TimetablesProject.Migrations
                     b.ToTable("Timetables");
                 });
 
-            modelBuilder.Entity("CallScheduleLesson", b =>
+            modelBuilder.Entity("ScheduleLesson", b =>
                 {
-                    b.HasOne("TimetablesProject.Models.CallSchedule", null)
+                    b.HasOne("TimetablesProject.Models.Schedule", null)
                         .WithMany()
-                        .HasForeignKey("CallScheduleId")
+                        .HasForeignKey("ScheduleId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 

@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace TimetablesProject.Models
+namespace TimetablesProject.Data
 {
     public class Lesson : IEquatable<Lesson>
     {

@@ -11,29 +11,14 @@ using TimetablesProject.Data;
 namespace TimetablesProject.Migrations
 {
     [DbContext(typeof(TimetableDbContext))]
-    [Migration("20230113164948_AddCallShedulesAndClasses")]
-    partial class AddCallShedulesAndClasses
+    [Migration("20230124054126_RenameCallScheduleToSchedule")]
+    partial class RenameCallScheduleToSchedule
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
-            modelBuilder.HasAnnotation("ProductVersion", "7.0.1");
-
-            modelBuilder.Entity("ScheduleLesson", b =>
-                {
-                    b.Property<int>("ScheduleId")
-                        .HasColumnType("INTEGER");
-
-                    b.Property<int>("LessonsId")
-                        .HasColumnType("INTEGER");
-
-                    b.HasKey("ScheduleId", "LessonsId");
-
-                    b.HasIndex("LessonsId");
-
-                    b.ToTable("ScheduleLesson");
-                });
+            modelBuilder.HasAnnotation("ProductVersion", "7.0.2");
 
             modelBuilder.Entity("ClassTimetable", b =>
                 {
@@ -48,6 +33,21 @@ namespace TimetablesProject.Migrations
                     b.HasIndex("TimetableId");
 
                     b.ToTable("ClassTimetable");
+                });
+
+            modelBuilder.Entity("LessonSchedule", b =>
+                {
+                    b.Property<int>("LessonsId")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<int>("ScheduleId")
+                        .HasColumnType("INTEGER");
+
+                    b.HasKey("LessonsId", "ScheduleId");
+
+                    b.HasIndex("ScheduleId");
+
+                    b.ToTable("LessonSchedule");
                 });
 
             modelBuilder.Entity("SubjectTimetable", b =>
@@ -65,24 +65,7 @@ namespace TimetablesProject.Migrations
                     b.ToTable("SubjectTimetable");
                 });
 
-            modelBuilder.Entity("TimetablesProject.Models.Schedule", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("INTEGER");
-
-                    b.Property<bool>("IsActive")
-                        .HasColumnType("INTEGER");
-
-                    b.Property<string>("Name")
-                        .HasColumnType("TEXT");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Schedules");
-                });
-
-            modelBuilder.Entity("TimetablesProject.Models.Class", b =>
+            modelBuilder.Entity("TimetablesProject.Data.Class", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -93,13 +76,10 @@ namespace TimetablesProject.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("Number")
-                        .IsUnique();
-
                     b.ToTable("Classes");
                 });
 
-            modelBuilder.Entity("TimetablesProject.Models.Group", b =>
+            modelBuilder.Entity("TimetablesProject.Data.Group", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -115,7 +95,7 @@ namespace TimetablesProject.Migrations
                     b.ToTable("Groups");
                 });
 
-            modelBuilder.Entity("TimetablesProject.Models.Lesson", b =>
+            modelBuilder.Entity("TimetablesProject.Data.Lesson", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -129,13 +109,30 @@ namespace TimetablesProject.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("Start", "End")
-                        .IsUnique();
-
                     b.ToTable("Lessons");
                 });
 
-            modelBuilder.Entity("TimetablesProject.Models.Subject", b =>
+            modelBuilder.Entity("TimetablesProject.Data.Schedule", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("Name")
+                        .HasColumnType("TEXT");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("Name")
+                        .IsUnique();
+
+                    b.ToTable("Schedules");
+                });
+
+            modelBuilder.Entity("TimetablesProject.Data.Subject", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -156,7 +153,7 @@ namespace TimetablesProject.Migrations
                     b.ToTable("Subjects");
                 });
 
-            modelBuilder.Entity("TimetablesProject.Models.Teacher", b =>
+            modelBuilder.Entity("TimetablesProject.Data.Teacher", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -169,10 +166,13 @@ namespace TimetablesProject.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("FullName")
+                        .IsUnique();
+
                     b.ToTable("Teachers");
                 });
 
-            modelBuilder.Entity("TimetablesProject.Models.Timetable", b =>
+            modelBuilder.Entity("TimetablesProject.Data.Timetable", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -194,63 +194,63 @@ namespace TimetablesProject.Migrations
                     b.ToTable("Timetables");
                 });
 
-            modelBuilder.Entity("ScheduleLesson", b =>
-                {
-                    b.HasOne("TimetablesProject.Models.Schedule", null)
-                        .WithMany()
-                        .HasForeignKey("ScheduleId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("TimetablesProject.Models.Lesson", null)
-                        .WithMany()
-                        .HasForeignKey("LessonsId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
-
             modelBuilder.Entity("ClassTimetable", b =>
                 {
-                    b.HasOne("TimetablesProject.Models.Class", null)
+                    b.HasOne("TimetablesProject.Data.Class", null)
                         .WithMany()
                         .HasForeignKey("ClassesId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("TimetablesProject.Models.Timetable", null)
+                    b.HasOne("TimetablesProject.Data.Timetable", null)
                         .WithMany()
                         .HasForeignKey("TimetableId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("LessonSchedule", b =>
+                {
+                    b.HasOne("TimetablesProject.Data.Lesson", null)
+                        .WithMany()
+                        .HasForeignKey("LessonsId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("TimetablesProject.Data.Schedule", null)
+                        .WithMany()
+                        .HasForeignKey("ScheduleId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
 
             modelBuilder.Entity("SubjectTimetable", b =>
                 {
-                    b.HasOne("TimetablesProject.Models.Subject", null)
+                    b.HasOne("TimetablesProject.Data.Subject", null)
                         .WithMany()
                         .HasForeignKey("SubjectsId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("TimetablesProject.Models.Timetable", null)
+                    b.HasOne("TimetablesProject.Data.Timetable", null)
                         .WithMany()
                         .HasForeignKey("TimetableId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("TimetablesProject.Models.Subject", b =>
+            modelBuilder.Entity("TimetablesProject.Data.Subject", b =>
                 {
-                    b.HasOne("TimetablesProject.Models.Teacher", "Teacher")
+                    b.HasOne("TimetablesProject.Data.Teacher", "Teacher")
                         .WithMany()
                         .HasForeignKey("TeacherId");
 
                     b.Navigation("Teacher");
                 });
 
-            modelBuilder.Entity("TimetablesProject.Models.Timetable", b =>
+            modelBuilder.Entity("TimetablesProject.Data.Timetable", b =>
                 {
-                    b.HasOne("TimetablesProject.Models.Group", "Group")
+                    b.HasOne("TimetablesProject.Data.Group", "Group")
                         .WithMany()
                         .HasForeignKey("GroupId")
                         .OnDelete(DeleteBehavior.Cascade)

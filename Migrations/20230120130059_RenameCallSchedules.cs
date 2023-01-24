@@ -5,7 +5,7 @@
 namespace TimetablesProject.Migrations
 {
     /// <inheritdoc />
-    public partial class RenameCallSchedules : Migration
+    public partial class RenameSchedules : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)

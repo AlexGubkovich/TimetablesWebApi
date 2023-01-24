@@ -1,8 +1,8 @@
 ﻿using Microsoft.Build.Framework;
 
-namespace TimetablesProject.Models.DTO.CallScheduleDTO
+namespace TimetablesProject.Models.DTO.ScheduleDTO
 {
-    public class PatchCallScheduleDTO
+    public class PatchScheduleDTO
     {
         [Required]
         public int Id { get; set; }
