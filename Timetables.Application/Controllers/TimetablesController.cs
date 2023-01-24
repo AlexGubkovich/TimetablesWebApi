@@ -1,0 +1,45 @@
+﻿using AutoMapper;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+using System.Text.RegularExpressions;
+using Timetables.Data.Models;
+using Timetables.Core.DTOs;
+using Timetables.Data;
+
+namespace TimetablesProject.Controllers
+{
+    [Route("api/[controller]")]
+    [ApiController]
+    public class TimetablesController : ControllerBase
+    {
+        private readonly IMapper mapper;
+        private readonly TimetableDbContext context;
+
+        public TimetablesController(TimetableDbContext context, IMapper mapper)
+        {
+            this.mapper = mapper;
+            this.context = context;
+        }
+
+        [HttpGet("{groupId:int}")]
+        public async Task<ActionResult<Timetable>> GetTimetablesForGroup(int groupId)
+        {
+            var ff = RouteData.Values.Values.FirstOrDefault();
+            var timetables = await context.Timetables.Where(t => t.GroupId == groupId)
+                .Include(p => p.Classes)
+                .Include(p => p.Subjects).ThenInclude(p => p.Teacher)
+                .AsSplitQuery()
+                .ToListAsync();
+
+            if(timetables.Count > 0)
+            {
+                IEnumerable<TimetableDTO> timetablesDTO = mapper.Map<IEnumerable<TimetableDTO>>(timetables);
+         
+                return Ok(timetablesDTO);
+            }
+
+            return NotFound();
+        }
+    }
+}
