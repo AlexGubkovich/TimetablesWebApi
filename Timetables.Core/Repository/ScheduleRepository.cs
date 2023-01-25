@@ -101,6 +101,7 @@ namespace Timetables.Core.Repository
                 var lessons = updateSchedule.Lessons;
                 if (!schedule.Lessons.SequenceEqual(lessons))
                 {
+                    context.Lessons.RemoveRange(schedule.Lessons);
                     context.Lessons.AddRange(lessons);
                     schedule.Lessons = lessons;
                 }

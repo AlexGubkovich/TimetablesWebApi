@@ -21,6 +21,7 @@ namespace Timetables.Data
             modelBuilder.Entity<Timetable>().HasIndex(p => new { p.Date, p.GroupId }).IsUnique();
             modelBuilder.Entity<Schedule>().HasIndex(p => p.Name).IsUnique();
             modelBuilder.Entity<Teacher>().HasIndex(p => p.FullName).IsUnique();
+            modelBuilder.Entity<Group>().HasIndex(p => p.Name).IsUnique();
 
             modelBuilder.Entity<Timetable>()
                 .HasMany(p => p.Subjects)
@@ -28,11 +29,13 @@ namespace Timetables.Data
 
             modelBuilder.Entity<Timetable>()
                 .HasMany(p => p.Classes)
-                .WithMany();
+                .WithOne()
+                .OnDelete(DeleteBehavior.Cascade);
 
             modelBuilder.Entity<Schedule>()
                 .HasMany(p => p.Lessons)
-                .WithMany();
+                .WithOne()
+                .OnDelete(DeleteBehavior.Cascade);
 
             modelBuilder.Entity<Subject>()
                 .HasOne(p => p.Teacher)
