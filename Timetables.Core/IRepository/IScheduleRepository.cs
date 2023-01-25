@@ -1,4 +1,4 @@
-﻿using Timetables.Core.DTOs.CallScheduleDTO;
+﻿using Timetables.Core.DTOs.ScheduleDTOs;
 using Timetables.Core.Models;
 using Timetables.Data.Models;
 

@@ -1,11 +1,9 @@
 ﻿using AutoMapper;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using System.Text.RegularExpressions;
-using Timetables.Data.Models;
 using Timetables.Core.DTOs;
 using Timetables.Data;
+using Timetables.Data.Models;
 
 namespace TimetablesProject.Controllers
 {
@@ -32,10 +30,10 @@ namespace TimetablesProject.Controllers
                 .AsSplitQuery()
                 .ToListAsync();
 
-            if(timetables.Count > 0)
+            if (timetables.Count > 0)
             {
                 IEnumerable<TimetableDTO> timetablesDTO = mapper.Map<IEnumerable<TimetableDTO>>(timetables);
-         
+
                 return Ok(timetablesDTO);
             }
 

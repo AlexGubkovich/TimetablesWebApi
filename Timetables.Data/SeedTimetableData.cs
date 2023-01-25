@@ -8,16 +8,13 @@ namespace Timetables.Data
     {
         public static async Task GenerateSeedTimetableDataAsync(this IServiceProvider service)
         {
-            using (var scope = service.CreateScope())
-            {
-                var provider = scope.ServiceProvider;
-                var databaseContext = provider.GetRequiredService<TimetableDbContext>();
+            using var scope = service.CreateScope();
+            var provider = scope.ServiceProvider;
+            var databaseContext = provider.GetRequiredService<TimetableDbContext>();
 
-                databaseContext.Database.Migrate();
+            databaseContext.Database.Migrate();
 
-                await AddEntities(databaseContext);
-
-            }
+            await AddEntities(databaseContext);
         }
 
         private static async Task AddEntities(TimetableDbContext context)
@@ -26,11 +23,11 @@ namespace Timetables.Data
             if (!context.Lessons.Any())
             {
                 lessons = new List<Lesson> {
-                new Lesson{ Start = new TimeSpan(9,0,0), End = new TimeSpan(10,20,0)},
-                new Lesson{ Start = new TimeSpan(10,30,0), End = new TimeSpan(11,50,0)},
-                new Lesson{ Start = new TimeSpan(12,10,0), End = new TimeSpan(13,30,0)},
-                new Lesson{ Start = new TimeSpan(13,40,0), End = new TimeSpan(15,0,0)}
-            };
+                    new Lesson{ Start = new TimeSpan(9,0,0), End = new TimeSpan(10,20,0)},
+                    new Lesson{ Start = new TimeSpan(10,30,0), End = new TimeSpan(11,50,0)},
+                    new Lesson{ Start = new TimeSpan(12,10,0), End = new TimeSpan(13,30,0)},
+                    new Lesson{ Start = new TimeSpan(13,40,0), End = new TimeSpan(15,0,0)}
+                };
                 context.Lessons.AddRange(lessons);
             }
             else
@@ -38,17 +35,12 @@ namespace Timetables.Data
                 lessons = context.Lessons.ToList();
             }
 
-            List<Schedule> Schedules;
             if (!context.Schedules.Any())
             {
-                Schedules = new List<Schedule> {
-                new Schedule { Lessons = new List<Lesson>{ lessons[0], lessons[1], lessons[2], lessons[3], }, IsActive = true, Name = "Весенне расписание" }
-            };
-                context.Schedules.AddRange(Schedules);
-            }
-            else
-            {
-                Schedules = context.Schedules.ToList();
+                var schedules = new List<Schedule> {
+                    new Schedule { Lessons = new List<Lesson>{ lessons[0], lessons[1], lessons[2], lessons[3], }, IsActive = true, Name = "Весенне расписание" }
+                };
+                context.Schedules.AddRange(schedules);
             }
 
 
@@ -56,9 +48,9 @@ namespace Timetables.Data
             if (!context.Groups.Any())
             {
                 groups = new List<Group> {
-                new Group{ Name = "ИПЗ-20" },
-                new Group{ Name = "АКТ-20" }
-            };
+                    new Group{ Name = "ИПЗ-20" },
+                    new Group{ Name = "АКТ-20" }
+                };
                 context.Groups.AddRange(groups);
             }
             else
@@ -70,10 +62,10 @@ namespace Timetables.Data
             if (!context.Teachers.Any())
             {
                 teachers = new List<Teacher> {
-                new Teacher{ Id = 1, FullName = "Максимов В.И." },
-                new Teacher{ Id = 2, FullName = "Тарасюк А.И." },
-                new Teacher{ Id = 3, FullName = "Медведева О.А" }
-            };
+                    new Teacher{ Id = 1, FullName = "Максимов В.И." },
+                    new Teacher{ Id = 2, FullName = "Тарасюк А.И." },
+                    new Teacher{ Id = 3, FullName = "Медведева О.А" }
+                };
                 context.Teachers.AddRange(teachers);
             }
             else
@@ -85,14 +77,14 @@ namespace Timetables.Data
             if (!context.Subjects.Any())
             {
                 subjects = new List<Subject> {
-                new Subject{ Name = "Линейная математика", Teacher = teachers[0] },
-                new Subject{ Name = "ООП", Teacher = teachers[1] },
-                new Subject{ Name = "Английский", Teacher = teachers[2] },
+                    new Subject{ Name = "Линейная математика", Teacher = teachers[0] },
+                    new Subject{ Name = "ООП", Teacher = teachers[1] },
+                    new Subject{ Name = "Английский", Teacher = teachers[2] },
 
-                new Subject{ Name = "Конструирование", Teacher = teachers[1] },
-                new Subject{ Name = "Робототехника", Teacher = teachers[0] },
-                new Subject{ Name = "Моделирование", Teacher = teachers[2] },
-            };
+                    new Subject{ Name = "Конструирование", Teacher = teachers[1] },
+                    new Subject{ Name = "Робототехника", Teacher = teachers[0] },
+                    new Subject{ Name = "Моделирование", Teacher = teachers[2] },
+                };
                 context.Subjects.AddRange(subjects);
             }
             else
@@ -104,12 +96,12 @@ namespace Timetables.Data
             if (!context.Classes.Any())
             {
                 classes = new List<Class> {
-                new Class { Number = 1},
-                new Class { Number = 2},
-                new Class { Number = 3},
-                new Class { Number = 4},
-                new Class { Number = 5},
-            };
+                    new Class { Number = 1},
+                    new Class { Number = 2},
+                    new Class { Number = 3},
+                    new Class { Number = 4},
+                    new Class { Number = 5},
+                };
                 context.Classes.AddRange(classes);
             }
             else
@@ -121,16 +113,16 @@ namespace Timetables.Data
             if (!context.Timetables.Any())
             {
                 timetables = new List<Timetable> {
-                new Timetable{ Date = DayOfWeek.Monday, Group = groups[0], GroupId = groups[0].Id, Subjects = new List<Subject> { subjects[0], subjects[1] }, Classes = new List<Class> { classes[0], classes[2] } },
-                new Timetable{ Date = DayOfWeek.Tuesday, Group = groups[0], GroupId = groups[0].Id, Subjects = new List<Subject> { subjects[2], subjects[1] }, Classes = new List<Class> { classes[1], classes[2] } },
-                new Timetable{ Date = DayOfWeek.Wednesday, Group = groups[0], GroupId = groups[0].Id, Subjects = new List <Subject> { subjects[1] }, Classes = new List<Class> { classes[2] } },
-                new Timetable{ Date = DayOfWeek.Thursday, Group = groups[0], GroupId = groups[0].Id, Subjects =  new List<Subject> { subjects[2], subjects[0] }, Classes = new List<Class> { classes[0], classes[1] } },
-                new Timetable{ Date = DayOfWeek.Friday, Group = groups[0], GroupId = groups[0].Id, Subjects = new List <Subject> { subjects[0], subjects[1] }, Classes = new List<Class> { classes[0], classes[1] } },
+                    new Timetable{ Date = DayOfWeek.Monday, Group = groups[0], GroupId = groups[0].Id, Subjects = new List<Subject> { subjects[0], subjects[1] }, Classes = new List<Class> { classes[0], classes[2] } },
+                    new Timetable{ Date = DayOfWeek.Tuesday, Group = groups[0], GroupId = groups[0].Id, Subjects = new List<Subject> { subjects[2], subjects[1] }, Classes = new List<Class> { classes[1], classes[2] } },
+                    new Timetable{ Date = DayOfWeek.Wednesday, Group = groups[0], GroupId = groups[0].Id, Subjects = new List <Subject> { subjects[1] }, Classes = new List<Class> { classes[2] } },
+                    new Timetable{ Date = DayOfWeek.Thursday, Group = groups[0], GroupId = groups[0].Id, Subjects =  new List<Subject> { subjects[2], subjects[0] }, Classes = new List<Class> { classes[0], classes[1] } },
+                    new Timetable{ Date = DayOfWeek.Friday, Group = groups[0], GroupId = groups[0].Id, Subjects = new List <Subject> { subjects[0], subjects[1] }, Classes = new List<Class> { classes[0], classes[1] } },
 
-                new Timetable{ Date = DayOfWeek.Tuesday, Group = groups[1], GroupId = groups[1].Id, Subjects = new List<Subject> { subjects[3], subjects[4] }, Classes = new List<Class> { classes[2], classes[3] } },
-                new Timetable{ Date = DayOfWeek.Thursday, Group = groups[1], GroupId = groups[1].Id, Subjects = new List<Subject> { subjects[4], subjects[3], subjects[5] }, Classes = new List<Class> { classes[0], classes[1], classes[3] } },
-                new Timetable{ Date = DayOfWeek.Friday, Group = groups[1], GroupId = groups[1].Id, Subjects = new List<Subject> { subjects[4], subjects[5], subjects[2] }, Classes = new List<Class> { classes[0], classes[1], classes[2] } },
-            };
+                    new Timetable{ Date = DayOfWeek.Tuesday, Group = groups[1], GroupId = groups[1].Id, Subjects = new List<Subject> { subjects[3], subjects[4] }, Classes = new List<Class> { classes[2], classes[3] } },
+                    new Timetable{ Date = DayOfWeek.Thursday, Group = groups[1], GroupId = groups[1].Id, Subjects = new List<Subject> { subjects[4], subjects[3], subjects[5] }, Classes = new List<Class> { classes[0], classes[1], classes[3] } },
+                    new Timetable{ Date = DayOfWeek.Friday, Group = groups[1], GroupId = groups[1].Id, Subjects = new List<Subject> { subjects[4], subjects[5], subjects[2] }, Classes = new List<Class> { classes[0], classes[1], classes[2] } },
+                };
                 context.Timetables.AddRange(timetables);
             }
 

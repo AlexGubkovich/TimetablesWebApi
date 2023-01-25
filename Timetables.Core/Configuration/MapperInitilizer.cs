@@ -1,7 +1,7 @@
 using AutoMapper;
 using Timetables.Core.DTOs;
-using Timetables.Core.DTOs.CallScheduleDTO;
-using Timetables.Core.DTOs.GroupDTO;
+using Timetables.Core.DTOs.GroupDTOs;
+using Timetables.Core.DTOs.ScheduleDTOs;
 using Timetables.Core.DTOs.SubjectsDTOs;
 using Timetables.Core.DTOs.TeacherDTOs;
 using Timetables.Data.Models;
@@ -22,7 +22,7 @@ namespace Timetables.Core.Configuration
             CreateMap<Class, ClassDTO>().ReverseMap();
             CreateMap<CreateGroupDTO, Group>().ReverseMap();
 
-            CreateMap<Schedule, ScheduleDTO>().ReverseMap();
+            CreateMap<Schedule, ScheduleLessonsDTO>().ReverseMap();
             CreateMap<Schedule, CreateScheduleDTO>().ReverseMap();
             CreateMap<Schedule, UpdateScheduleDTO>().ReverseMap();
             CreateMap<Lesson, LessonDTO>().ReverseMap();

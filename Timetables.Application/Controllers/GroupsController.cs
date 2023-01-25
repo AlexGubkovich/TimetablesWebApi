@@ -1,6 +1,6 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
-using Timetables.Core.DTOs.GroupDTO;
+using Timetables.Core.DTOs.GroupDTOs;
 using Timetables.Core.IRepository.Base;
 using Timetables.Data.Models;
 
@@ -42,7 +42,7 @@ namespace TimetablesProject.Controllers
                 return NoContent();
             }
 
-            return Ok(group);;
+            return Ok(group);
         }
 
         [HttpPost]

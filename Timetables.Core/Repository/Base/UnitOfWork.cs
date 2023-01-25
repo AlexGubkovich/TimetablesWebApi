@@ -20,11 +20,7 @@ namespace Timetables.Core.Repository.Base
         {
             get
             {
-                if (group == null)
-                {
-                    group = new GroupRepository(context);
-                }
-
+                group ??= new GroupRepository(context);
                 return group;
             }
         }
@@ -33,11 +29,7 @@ namespace Timetables.Core.Repository.Base
         {
             get
             {
-                if (subject == null)
-                {
-                    subject = new SubjectRepository(context);
-                }
-
+                subject ??= new SubjectRepository(context);
                 return subject;
             }
         }
@@ -46,11 +38,7 @@ namespace Timetables.Core.Repository.Base
         {
             get
             {
-                if (teacher == null)
-                {
-                    teacher = new TeacherRepository(context);
-                }
-
+                teacher ??= new TeacherRepository(context);
                 return teacher;
             }
         }

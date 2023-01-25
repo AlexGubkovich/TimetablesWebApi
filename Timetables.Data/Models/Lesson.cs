@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace Timetables.Data.Models
+﻿namespace Timetables.Data.Models
 {
     public class Lesson : IEquatable<Lesson>
     {
@@ -17,6 +15,16 @@ namespace Timetables.Data.Models
                 return true;
             else
                 return false;
+        }
+
+        public override bool Equals(object obj)
+        {
+            return Equals(obj as Lesson);
+        }
+
+        public override int GetHashCode()
+        {
+            return base.GetHashCode();
         }
     }
 }

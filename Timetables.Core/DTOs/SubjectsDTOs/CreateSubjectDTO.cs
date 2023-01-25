@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Timetables.Core.DTOs.TeacherDTOs;
+﻿using Timetables.Core.DTOs.TeacherDTOs;
 
 namespace Timetables.Core.DTOs.SubjectsDTOs
 {

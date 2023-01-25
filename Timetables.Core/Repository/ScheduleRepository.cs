@@ -1,7 +1,5 @@
-﻿using AutoMapper;
-using Microsoft.EntityFrameworkCore;
-using System.Data.Common;
-using Timetables.Core.DTOs.CallScheduleDTO;
+﻿using Microsoft.EntityFrameworkCore;
+using Timetables.Core.DTOs.ScheduleDTOs;
 using Timetables.Core.IRepository;
 using Timetables.Core.Models;
 using Timetables.Data;

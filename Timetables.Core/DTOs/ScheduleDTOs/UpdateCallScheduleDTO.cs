@@ -1,4 +1,4 @@
-﻿namespace Timetables.Core.DTOs.CallScheduleDTO
+﻿namespace Timetables.Core.DTOs.ScheduleDTOs
 {
     public class UpdateScheduleDTO
     {

@@ -1,11 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.ComponentModel.DataAnnotations;
 
-namespace Timetables.Core.DTOs.GroupDTO
+namespace Timetables.Core.DTOs.GroupDTOs
 {
     public class CreateGroupDTO
     {

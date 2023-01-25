@@ -1,6 +1,6 @@
-﻿namespace Timetables.Core.DTOs.CallScheduleDTO
+﻿namespace Timetables.Core.DTOs.ScheduleDTOs
 {
-    public class ScheduleDTO
+    public class ScheduleLessonsDTO
     {
         public List<LessonDTO> Lessons { get; set; }
     }

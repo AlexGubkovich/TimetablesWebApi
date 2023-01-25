@@ -1,8 +1,7 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
-using Timetables.Core.DTOs.CallScheduleDTO;
+using Timetables.Core.DTOs.ScheduleDTOs;
 using Timetables.Core.IRepository;
-using Timetables.Core.IRepository.Base;
 using Timetables.Data.Models;
 
 
@@ -40,7 +39,7 @@ namespace TimetablesProject.Controllers
         }
 
         [HttpGet("active/lessons")]
-        public async Task<ActionResult<ScheduleDTO>> GetActiveScheduleLessons()
+        public async Task<ActionResult<ScheduleLessonsDTO>> GetActiveScheduleLessons()
         {
             var schedule = await repository.GetActiveAsync();
 
@@ -49,7 +48,7 @@ namespace TimetablesProject.Controllers
                 return NoContent();
             }
 
-            return Ok(mapper.Map<ScheduleDTO>(schedule));
+            return Ok(mapper.Map<ScheduleLessonsDTO>(schedule));
         }
 
         [HttpGet("{id:int}")]
@@ -73,7 +72,7 @@ namespace TimetablesProject.Controllers
 
             if (!result.Success)
             {
-                logger.LogError(result.Error);
+                logger.LogTrace($"Error in {nameof(CreateSchedule)}, ", result.Error);
                 return BadRequest();
             }
 
@@ -87,7 +86,7 @@ namespace TimetablesProject.Controllers
 
             if (!result.Success)
             {
-                logger.LogWarning(result.Error);
+                logger.LogTrace($"Error in {nameof(UpdateSchedule)}, ", result.Error);
                 return BadRequest();
             }
 
@@ -101,9 +100,9 @@ namespace TimetablesProject.Controllers
 
             if (!result.Success)
             {
-                logger.LogTrace(result.Error);
+                logger.LogTrace($"Error in {nameof(SetIsActiveSchedule)}, ", result.Error);
                 return NotFound();
-            }          
+            }
 
             return Ok();
         }
@@ -114,7 +113,7 @@ namespace TimetablesProject.Controllers
             var result = await repository.DeleteAsync(id);
             if (!result.Success)
             {
-                logger.LogInformation(result.Error);
+                logger.LogTrace($"Error in {nameof(DeleteSchedule)}, ", result.Error);
                 return NotFound();
             }
 

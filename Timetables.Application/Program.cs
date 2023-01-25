@@ -1,10 +1,9 @@
 ﻿using Serilog;
 using Timetables.Application.Extentions;
-using Timetables.Data;
-using Timetables.Core.IRepository.Base;
-using Timetables.Core.Repository.Base;
 using Timetables.Core.IRepository;
+using Timetables.Core.IRepository.Base;
 using Timetables.Core.Repository;
+using Timetables.Core.Repository.Base;
 
 Log.Logger = new LoggerConfiguration()
     .WriteTo.Console()
@@ -27,7 +26,8 @@ builder.Host.ConfigureSerilog();
 
 builder.Services.ConfigureSwagger();
 
-builder.Services.AddCors(o => {
+builder.Services.AddCors(o =>
+{
     o.AddPolicy("AllowAll", builder =>
         builder.AllowAnyOrigin()
             .AllowAnyMethod()

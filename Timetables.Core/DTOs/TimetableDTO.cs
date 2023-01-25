@@ -1,4 +1,3 @@
-using System.ComponentModel.DataAnnotations;
 using Timetables.Data.Models;
 
 namespace Timetables.Core.DTOs
