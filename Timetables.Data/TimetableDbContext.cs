@@ -1,4 +1,5 @@
 using Microsoft.EntityFrameworkCore;
+using Timetables.Data.Configuration;
 using Timetables.Data.Models;
 
 namespace Timetables.Data
@@ -18,28 +19,11 @@ namespace Timetables.Data
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<Timetable>().HasIndex(p => new { p.Date, p.GroupId }).IsUnique();
-            modelBuilder.Entity<Schedule>().HasIndex(p => p.Name).IsUnique();
-            modelBuilder.Entity<Teacher>().HasIndex(p => p.FullName).IsUnique();
-            modelBuilder.Entity<Group>().HasIndex(p => p.Name).IsUnique();
-
-            modelBuilder.Entity<Timetable>()
-                .HasMany(p => p.Subjects)
-                .WithMany();
-
-            modelBuilder.Entity<Timetable>()
-                .HasMany(p => p.Classes)
-                .WithOne()
-                .OnDelete(DeleteBehavior.Cascade);
-
-            modelBuilder.Entity<Schedule>()
-                .HasMany(p => p.Lessons)
-                .WithOne()
-                .OnDelete(DeleteBehavior.Cascade);
-
-            modelBuilder.Entity<Subject>()
-                .HasOne(p => p.Teacher)
-                .WithMany();
+            modelBuilder.ApplyConfiguration(new ScheduleConfiguration());
+            modelBuilder.ApplyConfiguration(new TeacherConfiguration());
+            modelBuilder.ApplyConfiguration(new SubjectConfiguration());
+            modelBuilder.ApplyConfiguration(new GroupConfiguration());
+            modelBuilder.ApplyConfiguration(new TimetableConfiguration());
 
             base.OnModelCreating(modelBuilder);
         }

@@ -4,6 +4,7 @@ using Timetables.Core.IRepository;
 using Timetables.Core.IRepository.Base;
 using Timetables.Core.Repository;
 using Timetables.Core.Repository.Base;
+using Timetables.Data;
 
 Log.Logger = new LoggerConfiguration()
     .WriteTo.Console()
@@ -58,7 +59,7 @@ app.UseAuthorization();
 
 app.MapControllers();
 
-//app.Services.GenerateSeedTimetableDataAsync().Wait();
+app.Services.GenerateSeedTimetableDataAsync().Wait();
 
 app.Run();
 
