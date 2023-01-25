@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using Microsoft.EntityFrameworkCore;
 using System.Data.Common;
+using Timetables.Core.DTOs.CallScheduleDTO;
 using Timetables.Core.IRepository;
 using Timetables.Core.Models;
 using Timetables.Data;
@@ -28,6 +29,11 @@ namespace Timetables.Core.Repository
         public async Task<IList<Schedule>> GetAllAsync()
         {
             return await context.Schedules.Include(p => p.Lessons).AsNoTracking().ToListAsync();
+        }
+
+        public async Task<Schedule> GetById(int id)
+        {
+            return await context.Schedules.FindAsync(id);
         }
 
         public async Task<RepositoryResponse> CreateAsync(Schedule schedule)
@@ -62,16 +68,16 @@ namespace Timetables.Core.Repository
             return new RepositoryResponse { Success = true };
         }
 
-        public async Task<RepositoryResponse> SetIsActiveAsync(int id, bool IsActive)
+        public async Task<RepositoryResponse> SetIsActiveAsync(PatchScheduleDTO patchSchedule)
         {
-            var scheduleCurrent = await context.Schedules.FindAsync(id);
+            var scheduleCurrent = await context.Schedules.FindAsync(patchSchedule.Id);
 
             if (scheduleCurrent == null)
             {
                 return new RepositoryResponse { Success = false, Error = "There is no such schedule" };
             }
 
-            await ChangeIsActive(scheduleCurrent, IsActive);
+            await ChangeIsActive(scheduleCurrent, patchSchedule.IsActive);
 
             return new RepositoryResponse { Success = true };
         }

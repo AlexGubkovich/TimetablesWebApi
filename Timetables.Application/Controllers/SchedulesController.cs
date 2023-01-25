@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Timetables.Core.DTOs.CallScheduleDTO;
 using Timetables.Core.IRepository;
+using Timetables.Core.IRepository.Base;
 using Timetables.Data.Models;
 
 
@@ -15,7 +16,7 @@ namespace TimetablesProject.Controllers
         private readonly IScheduleRepository repository;
         private readonly ILogger<SchedulesController> logger;
 
-        public SchedulesController( 
+        public SchedulesController(
             IScheduleRepository repository,
             IMapper mapper,
             ILogger<SchedulesController> logger)
@@ -25,8 +26,21 @@ namespace TimetablesProject.Controllers
             this.logger = logger;
         }
 
-        [HttpGet]
-        public async Task<ActionResult<ScheduleDTO>> GetActiveSchedule()
+        [HttpGet(Name = "All")]
+        public async Task<ActionResult<List<Schedule>>> GetSchedules()
+        {
+            var schedules = await repository.GetAllAsync();
+
+            if (schedules == null)
+            {
+                return NoContent();
+            }
+
+            return Ok(schedules);
+        }
+
+        [HttpGet("active/lessons")]
+        public async Task<ActionResult<ScheduleDTO>> GetActiveScheduleLessons()
         {
             var schedule = await repository.GetActiveAsync();
 
@@ -38,17 +52,17 @@ namespace TimetablesProject.Controllers
             return Ok(mapper.Map<ScheduleDTO>(schedule));
         }
 
-        [HttpGet("[action]")]
-        public async Task<ActionResult<List<Schedule>>> GetSchedules()
+        [HttpGet("{id:int}")]
+        public async Task<ActionResult<Schedule>> GetScheduleById(int id)
         {
-            var schedules = await repository.GetAllAsync();
+            var schedule = await repository.GetById(id);
 
-            if (schedules == null)
+            if (schedule == null)
             {
                 return NoContent();
             }
 
-            return Ok(schedules);
+            return Ok(schedule);
         }
 
         [HttpPost]
@@ -63,7 +77,7 @@ namespace TimetablesProject.Controllers
                 return BadRequest();
             }
 
-            return Ok();
+            return CreatedAtAction("GetScheduleById", new { id = schedule.Id }, schedule);
         }
 
         [HttpPut]
@@ -81,9 +95,9 @@ namespace TimetablesProject.Controllers
         }
 
         [HttpPatch]
-        public async Task<ActionResult> SetIsActiveSchedule(int id, bool isActive)
+        public async Task<ActionResult> SetIsActiveSchedule(PatchScheduleDTO patchSchedule)
         {
-            var result = await repository.SetIsActiveAsync(id, isActive);
+            var result = await repository.SetIsActiveAsync(patchSchedule);
 
             if (!result.Success)
             {
@@ -94,7 +108,7 @@ namespace TimetablesProject.Controllers
             return Ok();
         }
 
-        [HttpDelete()]
+        [HttpDelete("{id:int}")]
         public async Task<ActionResult> DeleteSchedule(int id)
         {
             var result = await repository.DeleteAsync(id);

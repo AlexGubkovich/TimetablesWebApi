@@ -1,4 +1,6 @@
-﻿namespace Timetables.Core.DTOs
+﻿using Timetables.Core.DTOs.TeacherDTOs;
+
+namespace Timetables.Core.DTOs.SubjectsDTOs
 {
     public class SubjectDTO
     {

@@ -1,4 +1,4 @@
-﻿namespace Timetables.Core.DTOs
+﻿namespace Timetables.Core.DTOs.TeacherDTOs
 {
     public class TeacherDTO
     {

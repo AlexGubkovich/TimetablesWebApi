@@ -1,8 +1,10 @@
 ﻿using Serilog;
-using Timetables.Core.Repository;
-using Timetables.Core.IRepository;
 using Timetables.Application.Extentions;
 using Timetables.Data;
+using Timetables.Core.IRepository.Base;
+using Timetables.Core.Repository.Base;
+using Timetables.Core.IRepository;
+using Timetables.Core.Repository;
 
 Log.Logger = new LoggerConfiguration()
     .WriteTo.Console()
@@ -16,6 +18,7 @@ builder.Services.ConfigureControllers();
 
 builder.Services.ConfigureDbContext(builder.Configuration, builder.Environment);
 
+builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 builder.Services.AddScoped<IScheduleRepository, ScheduleRepository>();
 
 builder.Services.ConfigureAutoMapper();

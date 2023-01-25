@@ -1,7 +1,7 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using Timetables.Data;
+using Timetables.Core.DTOs.GroupDTO;
+using Timetables.Core.IRepository.Base;
 using Timetables.Data.Models;
 
 namespace TimetablesProject.Controllers
@@ -10,65 +10,67 @@ namespace TimetablesProject.Controllers
     [ApiController]
     public class GroupsController : Controller
     {
-        //private readonly IMapper mapper;
-        private readonly TimetableDbContext context;
+        private readonly IMapper mapper;
+        private readonly IUnitOfWork repository;
 
-        public GroupsController(TimetableDbContext context, IMapper mapper)
+        public GroupsController(IUnitOfWork repository, IMapper mapper)
         {
-            //this.mapper = mapper;
-            this.context = context;
+            this.mapper = mapper;
+            this.repository = repository;
         }
 
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Group>>> GetGroups()
         {
-            var groups = await context.Groups.ToListAsync();
+            var groups = await repository.Group.GetAllGroups();
 
-            if (groups.Count > 0)
+            if (groups.Count() < 0)
             {
-                return Ok(groups);
+                return NoContent();
             }
 
-            return NoContent();
+            return Ok(groups);
+        }
+
+        [HttpGet("{id:int}")]
+        public async Task<ActionResult<Group>> GetGroupById(int id)
+        {
+            var group = await repository.Group.GetGroupById(id);
+
+            if (group == null)
+            {
+                return NoContent();
+            }
+
+            return Ok(group);;
         }
 
         [HttpPost]
-        public async Task<ActionResult<IEnumerable<Group>>> CreateGroup()
+        public async Task<ActionResult> CreateGroup(CreateGroupDTO createGroup)
         {
-            var groups = await context.Groups.ToListAsync();
+            var group = mapper.Map<Group>(createGroup);
+            await repository.Group.CreateGroup(group);
+            await repository.SaveAsync();
 
-            if (groups.Count > 0)
-            {
-                return Ok(groups);
-            }
-
-            return NoContent();
+            return CreatedAtAction("GetGroupById", new { id = group.Id }, group);
         }
 
         [HttpPut]
-        public async Task<ActionResult<IEnumerable<Group>>> UpdateGroup()
+        public async Task<ActionResult> UpdateGroup(Group updateGroup)
         {
-            var groups = await context.Groups.ToListAsync();
+            repository.Group.UpdateGroup(updateGroup);
+            await repository.SaveAsync();
 
-            if (groups.Count > 0)
-            {
-                return Ok(groups);
-            }
-
-            return NoContent();
+            return Ok();
         }
 
-        [HttpDelete]
-        public async Task<ActionResult<IEnumerable<Group>>> DeleteGroup()
+        [HttpDelete("{id:int}")]
+        public async Task<ActionResult> DeleteGroup(int id)
         {
-            var groups = await context.Groups.ToListAsync();
+            await repository.Group.DeleteGroup(id);
+            await repository.SaveAsync();
 
-            if (groups.Count > 0)
-            {
-                return Ok(groups);
-            }
-
-            return NoContent();
+            return Ok();
         }
     }
 }
