@@ -20,6 +20,10 @@ namespace Timetables.Application.Extentions
                 .WriteTo.Console());
         }
 
+        public static void ConfigureResponseCaching(this IServiceCollection services) =>
+            services.AddResponseCaching();
+
+
         public static void ConfigureDbContext(this IServiceCollection services, IConfiguration config, IWebHostEnvironment env)
         {
             services.AddDbContext<TimetableDbContext>(

@@ -1,6 +1,6 @@
 using Timetables.Data.Models;
 
-namespace Timetables.Core.DTOs
+namespace Timetables.Core.DTOs.TimetableDTOs
 {
     public class TimetableDTO
     {

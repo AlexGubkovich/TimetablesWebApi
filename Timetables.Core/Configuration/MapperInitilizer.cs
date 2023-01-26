@@ -4,6 +4,7 @@ using Timetables.Core.DTOs.GroupDTOs;
 using Timetables.Core.DTOs.ScheduleDTOs;
 using Timetables.Core.DTOs.SubjectsDTOs;
 using Timetables.Core.DTOs.TeacherDTOs;
+using Timetables.Core.DTOs.TimetableDTOs;
 using Timetables.Data.Models;
 
 namespace Timetables.Core.Configuration

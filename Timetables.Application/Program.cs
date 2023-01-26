@@ -27,6 +27,8 @@ builder.Host.ConfigureSerilog();
 
 builder.Services.ConfigureSwagger();
 
+builder.Services.ConfigureResponseCaching();
+
 builder.Services.AddCors(o =>
 {
     o.AddPolicy("AllowAll", builder =>
@@ -40,14 +42,13 @@ var app = builder.Build();
 if (app.Environment.IsDevelopment())
 {
     app.UseDeveloperExceptionPage();
+    app.UseSwagger();
+    app.UseSwaggerUI();
 }
 else
 {
     app.UseHsts();
 }
-
-app.UseSwagger();
-app.UseSwaggerUI();
 
 app.UseCustomExceptionHandler();
 
@@ -55,11 +56,13 @@ app.UseHttpsRedirection();
 
 app.UseCors("AllowAll");
 
+app.UseResponseCaching();
+
 app.UseAuthorization();
 
 app.MapControllers();
 
-app.Services.GenerateSeedTimetableDataAsync().Wait();
+//app.Services.GenerateSeedTimetableDataAsync().Wait();
 
 app.Run();
 

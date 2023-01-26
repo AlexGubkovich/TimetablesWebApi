@@ -1,7 +1,7 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using Timetables.Core.DTOs;
+using Timetables.Core.DTOs.TimetableDTOs;
 using Timetables.Data;
 using Timetables.Data.Models;
 
@@ -20,7 +20,8 @@ namespace TimetablesProject.Controllers
             this.context = context;
         }
 
-        [HttpGet("{groupId:int}")]
+        [HttpGet("byGroup/{groupId:int}")]
+        [ResponseCache(Duration = 60, Location = ResponseCacheLocation.Any)]
         public async Task<ActionResult<Timetable>> GetTimetablesForGroup(int groupId)
         {
             var ff = RouteData.Values.Values.FirstOrDefault();
@@ -38,6 +39,12 @@ namespace TimetablesProject.Controllers
             }
 
             return NotFound();
+        }
+
+        [HttpPut]
+        public async Task<ActionResult> UpdateTimetable(UpdateTimetabeDTO updateTimetabe)
+        {
+            return Ok();
         }
     }
 }
