@@ -15,11 +15,15 @@ namespace Timetables.Core.Configuration
         {
             AllowNullCollections = true;
 
-            CreateMap<Timetable, TimetableDTO>().ReverseMap();
-            CreateMap<Subject, SubjectDTO>().ReverseMap();
+            CreateMap<Timetable, TimetableDTO>();
+
+            CreateMap<Subject, SubjectDTO>()
+                .ForMember(d => d.TeacherName, s => s.MapFrom(x => x.Teacher.FullName));
             CreateMap<Subject, CreateSubjectDTO>().ReverseMap();
+
             CreateMap<Teacher, TeacherDTO>().ReverseMap();
             CreateMap<Teacher, CreateTeacherDTO>().ReverseMap();
+
             CreateMap<Class, ClassDTO>().ReverseMap();
             CreateMap<CreateGroupDTO, Group>().ReverseMap();
 

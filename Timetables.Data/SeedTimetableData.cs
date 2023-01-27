@@ -62,9 +62,9 @@ namespace Timetables.Data
             if (!context.Teachers.Any())
             {
                 teachers = new List<Teacher> {
-                    new Teacher{ Id = 1, FullName = "Максимов В.И." },
-                    new Teacher{ Id = 2, FullName = "Тарасюк А.И." },
-                    new Teacher{ Id = 3, FullName = "Медведева О.А" }
+                    new Teacher{ FullName = "Максимов В.И." },
+                    new Teacher{ FullName = "Тарасюк А.И." },
+                    new Teacher{ FullName = "Медведева О.А" }
                 };
                 context.Teachers.AddRange(teachers);
             }
@@ -100,7 +100,6 @@ namespace Timetables.Data
                     new Class { Number = 2},
                     new Class { Number = 3},
                     new Class { Number = 4},
-                    new Class { Number = 5},
                 };
                 context.Classes.AddRange(classes);
             }
@@ -118,7 +117,7 @@ namespace Timetables.Data
                     new Timetable{ Date = DayOfWeek.Wednesday, Group = groups[0], GroupId = groups[0].Id, Subjects = new List <Subject> { subjects[1] }, Classes = new List<Class> { classes[2] } },
                     new Timetable{ Date = DayOfWeek.Thursday, Group = groups[0], GroupId = groups[0].Id, Subjects =  new List<Subject> { subjects[2], subjects[0] }, Classes = new List<Class> { classes[0], classes[1] } },
                     new Timetable{ Date = DayOfWeek.Friday, Group = groups[0], GroupId = groups[0].Id, Subjects = new List <Subject> { subjects[0], subjects[1] }, Classes = new List<Class> { classes[0], classes[1] } },
-
+                    
                     new Timetable{ Date = DayOfWeek.Tuesday, Group = groups[1], GroupId = groups[1].Id, Subjects = new List<Subject> { subjects[3], subjects[4] }, Classes = new List<Class> { classes[2], classes[3] } },
                     new Timetable{ Date = DayOfWeek.Thursday, Group = groups[1], GroupId = groups[1].Id, Subjects = new List<Subject> { subjects[4], subjects[3], subjects[5] }, Classes = new List<Class> { classes[0], classes[1], classes[3] } },
                     new Timetable{ Date = DayOfWeek.Friday, Group = groups[1], GroupId = groups[1].Id, Subjects = new List<Subject> { subjects[4], subjects[5], subjects[2] }, Classes = new List<Class> { classes[0], classes[1], classes[2] } },

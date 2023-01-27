@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Timetables.Data;
 
@@ -10,27 +11,14 @@ using Timetables.Data;
 namespace Timetables.Data.Migrations
 {
     [DbContext(typeof(TimetableDbContext))]
-    partial class TimetableDbContextModelSnapshot : ModelSnapshot
+    [Migration("20230126143632_SomeChanges")]
+    partial class SomeChanges
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder.HasAnnotation("ProductVersion", "7.0.2");
-
-            modelBuilder.Entity("ClassTimetable", b =>
-                {
-                    b.Property<int>("ClassesId")
-                        .HasColumnType("INTEGER");
-
-                    b.Property<int>("TimetableId")
-                        .HasColumnType("INTEGER");
-
-                    b.HasKey("ClassesId", "TimetableId");
-
-                    b.HasIndex("TimetableId");
-
-                    b.ToTable("ClassTimetable");
-                });
 
             modelBuilder.Entity("SubjectTimetable", b =>
                 {
@@ -56,7 +44,12 @@ namespace Timetables.Data.Migrations
                     b.Property<int>("Number")
                         .HasColumnType("INTEGER");
 
+                    b.Property<int?>("TimetableId")
+                        .HasColumnType("INTEGER");
+
                     b.HasKey("Id");
+
+                    b.HasIndex("TimetableId");
 
                     b.ToTable("Classes");
                 });
@@ -184,21 +177,6 @@ namespace Timetables.Data.Migrations
                     b.ToTable("Timetables");
                 });
 
-            modelBuilder.Entity("ClassTimetable", b =>
-                {
-                    b.HasOne("Timetables.Data.Models.Class", null)
-                        .WithMany()
-                        .HasForeignKey("ClassesId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("Timetables.Data.Models.Timetable", null)
-                        .WithMany()
-                        .HasForeignKey("TimetableId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
-
             modelBuilder.Entity("SubjectTimetable", b =>
                 {
                     b.HasOne("Timetables.Data.Models.Subject", null)
@@ -212,6 +190,14 @@ namespace Timetables.Data.Migrations
                         .HasForeignKey("TimetableId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+                });
+
+            modelBuilder.Entity("Timetables.Data.Models.Class", b =>
+                {
+                    b.HasOne("Timetables.Data.Models.Timetable", null)
+                        .WithMany("Classes")
+                        .HasForeignKey("TimetableId")
+                        .OnDelete(DeleteBehavior.Cascade);
                 });
 
             modelBuilder.Entity("Timetables.Data.Models.Lesson", b =>
@@ -245,6 +231,11 @@ namespace Timetables.Data.Migrations
             modelBuilder.Entity("Timetables.Data.Models.Schedule", b =>
                 {
                     b.Navigation("Lessons");
+                });
+
+            modelBuilder.Entity("Timetables.Data.Models.Timetable", b =>
+                {
+                    b.Navigation("Classes");
                 });
 #pragma warning restore 612, 618
         }

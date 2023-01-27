@@ -5,6 +5,7 @@
         IGroupRepository Group { get; }
         ISubjectRepository Subject { get; }
         ITeacherRepository Teacher { get; }
+        ITimetableRepository Timetable { get; }
 
         Task SaveAsync();
     }

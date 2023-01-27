@@ -6,6 +6,6 @@ namespace Timetables.Core.DTOs.SubjectsDTOs
     {
         public string Name { get; set; } = null!;
 
-        public TeacherDTO Teacher { get; set; }
+        public string TeacherName { get; set; }
     }
 }

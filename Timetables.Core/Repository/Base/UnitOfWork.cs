@@ -10,10 +10,20 @@ namespace Timetables.Core.Repository.Base
         private IGroupRepository group;
         private ISubjectRepository subject;
         private ITeacherRepository teacher;
+        private ITimetableRepository timetable;
 
         public UnitOfWork(TimetableDbContext context)
         {
             this.context = context;
+        }
+
+        public ITimetableRepository Timetable 
+        {
+            get
+            {
+                timetable ??= new TimetableRepository(context);
+                return timetable;
+            }
         }
 
         public IGroupRepository Group
