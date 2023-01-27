@@ -4,10 +4,10 @@ namespace Timetables.Core.IRepository
 {
     public interface ISubjectRepository
     {
-        Task<IEnumerable<Subject>> GetAllSubjects();
-        Task<Subject> GetSubjectById(int id);
+        Task<IEnumerable<Subject>> GetAllSubjects(bool trackChanges);
+        Task<Subject> GetSubjectById(int id, bool trackChanges);
         Task CreateSubject(Subject subject);
         void UpdateSubject(Subject subject);
-        Task DeleteSubject(int id);
+        void DeleteSubject(Subject id);
     }
 }

@@ -10,30 +10,17 @@ namespace Timetables.Core.Repository
     {
         public TeacherRepository(TimetableDbContext context) : base(context) { }
 
-        public async Task<IEnumerable<Teacher>> GetAllTeachers()
-        {
-            return await FindAll().ToListAsync();
-        }
+        public async Task<IEnumerable<Teacher>> GetAllTeachers(bool trackChanges) =>
+            await FindAll(trackChanges).ToListAsync();
 
-        public async Task<Teacher> GetTeacherById(int id)
-        {
-            return await Context.Teachers.FindAsync(id);
-        }
+        public async Task<Teacher> GetTeacherById(int id, bool trackChanges) =>
+            await FindByCondition(t => t.Id == id, trackChanges)
+                .SingleOrDefaultAsync();
 
-        public async Task CreateTeacher(Teacher teacher)
-        {
-            await Create(teacher);
-        }
+        public async Task CreateTeacher(Teacher teacher) => await Create(teacher);
 
-        public void UpdateTeacher(Teacher teacher)
-        {
-            Update(teacher);
-        }
+        public void UpdateTeacher(Teacher teacher) => Update(teacher);
 
-        public async Task DeleteTeacher(int id)
-        {
-            var teacher = await Context.Teachers.FindAsync(id);
-            Delete(teacher);
-        }
+        public void DeleteTeacher(Teacher teacher) => Delete(teacher);
     }
 }

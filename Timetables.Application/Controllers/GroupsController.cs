@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
+using Serilog;
 using Timetables.Core.DTOs.GroupDTOs;
 using Timetables.Core.IRepository.Base;
 using Timetables.Data.Models;
@@ -12,53 +13,67 @@ namespace TimetablesProject.Controllers
     {
         private readonly IMapper mapper;
         private readonly IUnitOfWork repository;
+        private readonly Serilog.ILogger logger;
 
-        public GroupsController(IUnitOfWork repository, IMapper mapper)
+        public GroupsController(IUnitOfWork repository, IMapper mapper, Serilog.ILogger logger)
         {
             this.mapper = mapper;
             this.repository = repository;
+            this.logger = logger;
         }
 
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Group>>> GetGroups()
+        public async Task<ActionResult> GetGroups()
         {
-            var groups = await repository.Group.GetAllGroups();
+            var groups = await repository.Group.GetAllGroups(trackChanges: false);
 
             if (groups.Count() < 0)
             {
                 return NoContent();
             }
 
-            return Ok(groups);
+            var groupsDTO = mapper.Map<IEnumerable<GroupDTO>>(groups);
+
+            return Ok(groupsDTO);
         }
 
         [HttpGet("{id:int}")]
-        public async Task<ActionResult<Group>> GetGroupById(int id)
+        public async Task<ActionResult> GetGroupById(int id)
         {
-            var group = await repository.Group.GetGroupById(id);
+            var group = await repository.Group.GetGroupById(id, false);
 
             if (group == null)
             {
-                return NoContent();
+                return NotFound();
             }
 
-            return Ok(group);
+            var groupDTO = mapper.Map<GroupDTO>(group);
+            return Ok(groupDTO);
         }
 
         [HttpPost]
         public async Task<ActionResult> CreateGroup(CreateGroupDTO createGroup)
         {
-            var group = mapper.Map<Group>(createGroup);
-            await repository.Group.CreateGroup(group);
+            var groupEntity = mapper.Map<Group>(createGroup);
+            await repository.Group.CreateGroup(groupEntity);
             await repository.SaveAsync();
 
-            return CreatedAtAction("GetGroupById", new { id = group.Id }, group);
+            var groupToReturn = mapper.Map<GroupDTO>(groupEntity);
+
+            return CreatedAtAction("GetGroupById", new { id = groupEntity.Id }, groupToReturn);
         }
 
-        [HttpPut]
-        public async Task<ActionResult> UpdateGroup(Group updateGroup)
+        [HttpPut("{id:int}")]
+        public async Task<ActionResult> UpdateGroup(int id, UpdateGroupDTO updateGroup)
         {
-            repository.Group.UpdateGroup(updateGroup);
+            var groupEntity = await repository.Group.GetGroupById(id, true);
+            if (groupEntity == null)
+            {
+                logger.Information($"Group with id: {id} doesn't exist in the database");
+                return NotFound();
+            }
+
+            mapper.Map(updateGroup, groupEntity);
             await repository.SaveAsync();
 
             return Ok();
@@ -67,10 +82,17 @@ namespace TimetablesProject.Controllers
         [HttpDelete("{id:int}")]
         public async Task<ActionResult> DeleteGroup(int id)
         {
-            await repository.Group.DeleteGroup(id);
+            var group = await repository.Group.GetGroupById(id, false);
+            if (group == null)
+            {
+                logger.Information($"Group with id: {id} doesn't exist in the database");
+                return NotFound();
+            }
+
+            repository.Group.DeleteGroup(group);
             await repository.SaveAsync();
 
-            return Ok();
+            return NoContent();
         }
     }
 }

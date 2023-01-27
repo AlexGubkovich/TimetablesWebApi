@@ -10,30 +10,17 @@ namespace Timetables.Core.Repository
     {
         public SubjectRepository(TimetableDbContext context) : base(context) { }
 
-        public async Task<IEnumerable<Subject>> GetAllSubjects()
-        {
-            return await FindAll().ToListAsync();
-        }
+        public async Task<IEnumerable<Subject>> GetAllSubjects(bool trackChanges) =>
+            await FindAll(trackChanges).ToListAsync();
 
-        public async Task<Subject> GetSubjectById(int id)
-        {
-            return await Context.Subjects.FindAsync(id);
-        }
+        public async Task<Subject> GetSubjectById(int id, bool trackChanges) =>
+            await FindByCondition(s => s.Id == id, trackChanges)
+                .SingleOrDefaultAsync();
 
-        public async Task CreateSubject(Subject subject)
-        {
-            await Create(subject);
-        }
+        public async Task CreateSubject(Subject subject) => await Create(subject);
 
-        public void UpdateSubject(Subject subject)
-        {
-            Update(subject);
-        }
+        public void UpdateSubject(Subject subject) => Update(subject);
 
-        public async Task DeleteSubject(int id)
-        {
-            var subject = await Context.Subjects.FindAsync(id);
-            Delete(subject);
-        }
+        public void DeleteSubject(Subject subject) => Delete(subject);
     }
 }

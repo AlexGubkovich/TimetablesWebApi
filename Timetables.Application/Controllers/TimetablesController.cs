@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using System.Xml;
 using Timetables.Core.DTOs.TimetableDTOs;
 using Timetables.Core.IRepository.Base;
 using Timetables.Data.Models;
@@ -13,18 +14,20 @@ namespace TimetablesProject.Controllers
     {
         private readonly IMapper mapper;
         private readonly IUnitOfWork repository;
+        private readonly Serilog.ILogger logger;
 
-        public TimetablesController(IUnitOfWork repository, IMapper mapper)
+        public TimetablesController(IUnitOfWork repository, IMapper mapper, Serilog.ILogger logger)
         {
             this.mapper = mapper;
             this.repository = repository;
+            this.logger = logger;
         }
 
         [HttpGet("byGroup/{groupId:int}")]
         [ResponseCache(Duration = 60, Location = ResponseCacheLocation.Any)]
         public async Task<ActionResult<Timetable>> GetTimetablesByGroupId(int groupId)
         {
-            var timetables = await repository.Timetable.GetTimetablesByGroupId(groupId);
+            var timetables = await repository.Timetable.GetTimetablesByGroupId(groupId, false);
 
             if (timetables.Any())
             {
@@ -37,45 +40,59 @@ namespace TimetablesProject.Controllers
         }
 
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Timetable>>> GetTimetables()
+        public async Task<ActionResult> GetTimetables()
         {
-            var timetables = await repository.Timetable.GetAllTimetables();
+            var timetables = await repository.Timetable.GetAllTimetables(false);
 
             if (timetables.Count() < 0)
             {
                 return NoContent();
             }
 
-            return Ok(timetables);
+            var timetablesDTO = mapper.Map<IEnumerable<TimetableDTO>>(timetables);
+
+            return Ok(timetablesDTO);
         }
 
         [HttpGet("{id:int}")]
-        public async Task<ActionResult<Timetable>> GetTimetableById(int id)
+        public async Task<ActionResult> GetTimetableById(int id)
         {
-            var timetable = await repository.Timetable.GetTimetableById(id);
+            var timetable = await repository.Timetable.GetTimetableById(id, false);
 
             if (timetable == null)
             {
-                return NoContent();
+                return NotFound();
             }
 
-            return Ok(timetable);
+            var timetableDTO = mapper.Map<TimetableDTO>(timetable);
+
+            return Ok(timetableDTO);
         }
 
         [HttpPost]
         public async Task<ActionResult> CreateGroup(CreateTimetableDTO createTimetable)
         {
-            var timetable = mapper.Map<Timetable>(createTimetable);
-            await repository.Timetable.CreateTimetable(timetable);
+            var timetableEntity = mapper.Map<Timetable>(createTimetable);
+            await repository.Timetable.CreateTimetable(timetableEntity);
             await repository.SaveAsync();
 
-            return CreatedAtAction("GetTimetableById", new { id = timetable.Id }, timetable);
+            var timetableToReturn = mapper.Map<TimetableDTO>(timetableEntity);
+
+            return CreatedAtAction("GetTimetableById", new { id = timetableEntity.Id }, timetableToReturn);
         }
 
-        [HttpPut]
-        public async Task<ActionResult> UpdateTimetable(Timetable updateTimetable)
+        [HttpPut("{id:int}")]
+        public async Task<ActionResult> UpdateTimetable(int id, UpdateTimetabeDTO updateTimetable)
         {
-            repository.Timetable.UpdateTimetable(updateTimetable);
+            var timetableEntity = await repository.Timetable.GetTimetableById(id, true);
+
+            if (timetableEntity == null)
+            {
+                logger.Information($"Timetable with id: {id} doesn't exist in the database");
+                return NotFound();
+            }
+
+            mapper.Map(updateTimetable, timetableEntity);
             await repository.SaveAsync();
 
             return Ok();
@@ -84,10 +101,17 @@ namespace TimetablesProject.Controllers
         [HttpDelete("{id:int}")]
         public async Task<ActionResult> DeleteTimetable(int id)
         {
-            await repository.Timetable.DeleteTimetable(id);
+            var timetable = await repository.Timetable.GetTimetableById(id, false);
+            if(timetable == null)
+            {
+                logger.Information($"Timetable with id: {id} doesn't exist in the database");
+                return NotFound();
+            }
+
+            repository.Timetable.DeleteTimetable(timetable);
             await repository.SaveAsync();
 
-            return Ok();
+            return NoContent();
         }
     }
 }

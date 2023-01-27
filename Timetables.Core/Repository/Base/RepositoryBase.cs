@@ -13,10 +13,17 @@ namespace Timetables.Core.Repository.Base
             Context = context;
         }
 
-        public IQueryable<T> FindAll() => Context.Set<T>().AsNoTracking();
+        public IQueryable<T> FindAll(bool trackChanges) =>
+            !trackChanges ?
+                Context.Set<T>()
+                    .AsNoTracking()
+            : Context.Set<T>();
 
-        public IQueryable<T> FindByCondition(Expression<Func<T, bool>> expression) =>
-            Context.Set<T>().Where(expression).AsNoTracking();
+        public IQueryable<T> FindByCondition(Expression<Func<T, bool>> expression, bool trackChanges) =>
+            !trackChanges ?
+                Context.Set<T>().Where(expression)
+                .AsNoTracking()
+            : Context.Set<T>().Where(expression);
 
         public async Task Create(T entity) => await Context.Set<T>().AddAsync(entity);
 

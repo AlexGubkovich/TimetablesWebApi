@@ -10,30 +10,17 @@ namespace Timetables.Core.Repository
     {
         public GroupRepository(TimetableDbContext context) : base(context) { }
 
-        public async Task<IEnumerable<Group>> GetAllGroups()
-        {
-            return await FindAll().ToListAsync();
-        }
+        public async Task<IEnumerable<Group>> GetAllGroups(bool trackChanges) =>
+            await FindAll(trackChanges).ToListAsync();
 
-        public async Task<Group> GetGroupById(int id)
-        {
-            return await Context.Groups.FindAsync(id);
-        }
+        public async Task<Group> GetGroupById(int id, bool trackChanges) =>
+            await FindByCondition(g => g.Id == id, trackChanges)
+                .SingleOrDefaultAsync();
 
-        public async Task CreateGroup(Group group)
-        {
-            await Create(group);
-        }
+        public async Task CreateGroup(Group group) => await Create(group);
 
-        public void UpdateGroup(Group group)
-        {
-            Update(group);
-        }
+        public void UpdateGroup(Group group) => Update(group);
 
-        public async Task DeleteGroup(int id)
-        {
-            var group = await Context.Groups.FindAsync(id);
-            Delete(group);
-        }
+        public void DeleteGroup(Group group) => Delete(group);
     }
 }

@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Timetables.Core.DTOs.ScheduleDTOs
+namespace Timetables.Core.DTOs.TeacherDTOs
 {
-    public class ScheduleDTO
+    public class UpdateTeacherDTO
     {
     }
 }

@@ -4,10 +4,10 @@ namespace Timetables.Core.IRepository
 {
     public interface ITeacherRepository
     {
-        Task<IEnumerable<Teacher>> GetAllTeachers();
-        Task<Teacher> GetTeacherById(int id);
+        Task<IEnumerable<Teacher>> GetAllTeachers(bool trackChanges);
+        Task<Teacher> GetTeacherById(int id, bool trackChanges);
         Task CreateTeacher(Teacher teacher);
         void UpdateTeacher(Teacher teacher);
-        Task DeleteTeacher(int id);
+        void DeleteTeacher(Teacher teacher);
     }
 }

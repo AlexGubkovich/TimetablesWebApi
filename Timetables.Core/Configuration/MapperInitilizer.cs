@@ -15,22 +15,36 @@ namespace Timetables.Core.Configuration
         {
             AllowNullCollections = true;
 
-            CreateMap<Timetable, TimetableDTO>();
+            //Group
+            CreateMap<Group, GroupDTO>().ReverseMap();
+            CreateMap<CreateGroupDTO, Group>();
+            CreateMap<UpdateGroupDTO, Group>();
 
+            //Subject
             CreateMap<Subject, SubjectDTO>()
-                .ForMember(d => d.TeacherName, s => s.MapFrom(x => x.Teacher.FullName));
-            CreateMap<Subject, CreateSubjectDTO>().ReverseMap();
+                .ForMember(d => d.TeacherName, s => s.MapFrom(x => x.Teacher.FullName))
+                .ReverseMap(); ;
+            CreateMap<CreateSubjectDTO, Subject>();
+            CreateMap<UpdateSubjectDTO, Subject>();
 
+            //Teacher
             CreateMap<Teacher, TeacherDTO>().ReverseMap();
-            CreateMap<Teacher, CreateTeacherDTO>().ReverseMap();
+            CreateMap<CreateTeacherDTO, Teacher>();
+            CreateMap<UpdateTeacherDTO, Teacher>();
 
-            CreateMap<Class, ClassDTO>().ReverseMap();
-            CreateMap<CreateGroupDTO, Group>().ReverseMap();
+            //Timetable
+            CreateMap<Timetable, TimetableDTO>().ReverseMap();
+            CreateMap<CreateTimetableDTO, Timetable>();
+            CreateMap<UpdateTimetabeDTO, Timetable>();
 
+            //Schedule
+            CreateMap<Schedule, ScheduleDTO>().ReverseMap();
             CreateMap<Schedule, ScheduleLessonsDTO>().ReverseMap();
-            CreateMap<Schedule, CreateScheduleDTO>().ReverseMap();
-            CreateMap<Schedule, UpdateScheduleDTO>().ReverseMap();
+            CreateMap<CreateScheduleDTO, Schedule>();
+            CreateMap<UpdateScheduleDTO, Schedule>();
+
             CreateMap<Lesson, LessonDTO>().ReverseMap();
+            CreateMap<Class, ClassDTO>().ReverseMap();
         }
     }
 }

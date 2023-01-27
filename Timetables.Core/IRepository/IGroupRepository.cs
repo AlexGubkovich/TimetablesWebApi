@@ -5,11 +5,11 @@ namespace Timetables.Core.IRepository
 {
     public interface IGroupRepository : IRepositoryBase<Group>
     {
-        Task<IEnumerable<Group>> GetAllGroups();
-        Task<Group> GetGroupById(int id);
+        Task<IEnumerable<Group>> GetAllGroups(bool trackChanges);
+        Task<Group> GetGroupById(int id, bool trackChanges);
         Task CreateGroup(Group group);
         void UpdateGroup(Group group);
-        Task DeleteGroup(int id);
+        void DeleteGroup(Group id);
 
     }
 }

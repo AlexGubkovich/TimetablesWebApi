@@ -12,53 +12,68 @@ namespace TimetablesProject.Controllers
     {
         private readonly IMapper mapper;
         private readonly IUnitOfWork repository;
+        private readonly Serilog.ILogger logger;
 
-        public TeachersController(IUnitOfWork repository, IMapper mapper)
+        public TeachersController(IUnitOfWork repository, IMapper mapper, Serilog.ILogger logger)
         {
             this.mapper = mapper;
             this.repository = repository;
+            this.logger = logger;
         }
 
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Teacher>>> GetTeachers()
+        public async Task<ActionResult> GetTeachers()
         {
-            var teachers = await repository.Teacher.GetAllTeachers();
+            var teachers = await repository.Teacher.GetAllTeachers(false);
 
             if (teachers.Count() < 0)
             {
                 return NoContent();
             }
 
-            return Ok(teachers);
+            var teachersDTO = mapper.Map<IEnumerable<TeacherDTO>>(teachers);
+
+            return Ok(teachersDTO);
         }
 
         [HttpGet("{id:int}")]
-        public async Task<ActionResult<Teacher>> GetTeacherById(int id)
+        public async Task<ActionResult> GetTeacherById(int id)
         {
-            var teacher = await repository.Teacher.GetTeacherById(id);
+            var teacher = await repository.Teacher.GetTeacherById(id, false);
 
             if (teacher == null)
             {
-                return NoContent();
+                return NotFound();
             }
 
-            return Ok(teacher); ;
+            var teacherDTO = mapper.Map<TeacherDTO>(teacher);
+
+            return Ok(teacherDTO); ;
         }
 
         [HttpPost]
         public async Task<ActionResult> CreateTeacher(CreateTeacherDTO createTeacher)
         {
-            var teacher = mapper.Map<Teacher>(createTeacher);
-            await repository.Teacher.CreateTeacher(teacher);
+            var teacherEntity = mapper.Map<Teacher>(createTeacher);
+            await repository.Teacher.CreateTeacher(teacherEntity);
             await repository.SaveAsync();
 
-            return CreatedAtAction("GetGroupById", new { id = teacher.Id }, teacher);
+            var teacherToReturn = mapper.Map<TeacherDTO>(teacherEntity);
+
+            return CreatedAtAction("GetTeacherById", new { id = teacherEntity.Id }, teacherToReturn);
         }
 
-        [HttpPut]
-        public async Task<ActionResult> UpdateTeacher(Teacher updateTeacher)
+        [HttpPut("{id:int}")]
+        public async Task<ActionResult> UpdateTeacher(int id, UpdateTeacherDTO updateTeacher)
         {
-            repository.Teacher.UpdateTeacher(updateTeacher);
+            var teacherEntity = await repository.Teacher.GetTeacherById(id, true);
+            if(teacherEntity == null)
+            {
+                logger.Information($"Teacher with id: {id} doesn't exist in the database");
+                return NotFound();
+            }
+
+            mapper.Map(updateTeacher, teacherEntity);
             await repository.SaveAsync();
 
             return Ok();
@@ -67,10 +82,16 @@ namespace TimetablesProject.Controllers
         [HttpDelete("{id:int}")]
         public async Task<ActionResult> DeleteTeacher(int id)
         {
-            await repository.Teacher.DeleteTeacher(id);
+            var teacher = await repository.Teacher.GetTeacherById(id, false);
+            if (teacher == null)
+            {
+                logger.Information($"Teacher with id: {id} doesn't exist in the database");
+                return NotFound();
+            }
+            repository.Teacher.DeleteTeacher(teacher);
             await repository.SaveAsync();
 
-            return Ok();
+            return NoContent();
         }
     }
 }

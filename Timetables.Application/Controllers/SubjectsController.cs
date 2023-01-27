@@ -12,53 +12,68 @@ namespace TimetablesProject.Controllers
     {
         private readonly IMapper mapper;
         private readonly IUnitOfWork repository;
+        private readonly Serilog.ILogger logger;
 
-        public SubjectsController(IUnitOfWork repository, IMapper mapper)
+        public SubjectsController(IUnitOfWork repository, IMapper mapper, Serilog.ILogger logger)
         {
             this.mapper = mapper;
             this.repository = repository;
+            this.logger = logger;
         }
 
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Subject>>> GetSubjects()
+        public async Task<ActionResult> GetSubjects()
         {
-            var subjects = await repository.Subject.GetAllSubjects();
+            var subjects = await repository.Subject.GetAllSubjects(false);
 
             if (subjects.Count() < 0)
             {
                 return NoContent();
             }
 
-            return Ok(subjects);
+            var subjectsDTO = mapper.Map<IEnumerable<SubjectDTO>>(subjects);
+
+            return Ok(subjectsDTO);
         }
 
         [HttpGet("{id:int}")]
-        public async Task<ActionResult<Subject>> GetSubjectById(int id)
+        public async Task<ActionResult> GetSubjectById(int id)
         {
-            var subject = await repository.Subject.GetSubjectById(id);
+            var subject = await repository.Subject.GetSubjectById(id, false);
 
             if (subject == null)
             {
-                return NoContent();
+                return NotFound();
             }
 
-            return Ok(subject); ;
+            var subjectDTO = mapper.Map<SubjectDTO>(subject);
+
+            return Ok(subjectDTO); ;
         }
 
         [HttpPost]
         public async Task<ActionResult> CreateSubject(CreateSubjectDTO createSubject)
         {
-            var subject = mapper.Map<Subject>(createSubject);
-            await repository.Subject.CreateSubject(subject);
+            var subjectEntity = mapper.Map<Subject>(createSubject);
+            await repository.Subject.CreateSubject(subjectEntity);
             await repository.SaveAsync();
 
-            return CreatedAtAction("GetGroupById", new { id = subject.Id }, subject);
+            var subjectToReturn = mapper.Map<SubjectDTO>(subjectEntity);
+
+            return CreatedAtAction("GetSubjectById", new { id = subjectEntity.Id }, subjectToReturn);
         }
 
-        [HttpPut]
-        public async Task<ActionResult> UpdateSubject(Subject updateSubject)
+        [HttpPut("{id:int}")]
+        public async Task<ActionResult> UpdateSubject(int id, UpdateSubjectDTO updateSubject)
         {
-            repository.Subject.UpdateSubject(updateSubject);
+            var subjectEntity = await repository.Subject.GetSubjectById(id, true);
+            if (subjectEntity == null)
+            {
+                logger.Information($"Subject with id: {id} doesn't exist in the database");
+                return NotFound();
+            }
+
+            mapper.Map(updateSubject, subjectEntity);
             await repository.SaveAsync();
 
             return Ok();
@@ -67,10 +82,17 @@ namespace TimetablesProject.Controllers
         [HttpDelete("{id:int}")]
         public async Task<ActionResult> DeleteSubject(int id)
         {
-            await repository.Subject.DeleteSubject(id);
+            var subject = await repository.Subject.GetSubjectById(id, false);
+            if(subject == null)
+            {
+                logger.Information($"Subject with id: {id} doesn't exist in the database");
+                return NotFound();
+            }
+
+            repository.Subject.DeleteSubject(subject);
             await repository.SaveAsync();
 
-            return Ok();
+            return NoContent();
         }
     }
 }
