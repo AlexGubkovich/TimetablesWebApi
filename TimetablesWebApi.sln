@@ -3,11 +3,11 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.4.33213.308
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Timetables.Core", "Timetables.Core\Timetables.Core.csproj", "{F97CCAEB-3926-47E8-BE86-50F5D064B244}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Timetables.Application", "Timetables.Application\Timetables.Application.csproj", "{A3C961D0-EC09-4EA7-9C46-C7DB9F1BA8D2}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Timetables.Data", "Timetables.Data\Timetables.Data.csproj", "{CA1F6D18-F5B1-4D63-ACC5-2F6BA83D224C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Timetables.Core", "Timetables.Core\Timetables.Core.csproj", "{2D19BCB1-B7C0-47E6-8A8A-A324E308159A}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Timetables.Application", "Timetables.Application\Timetables.Application.csproj", "{B3EF6024-9B2B-4876-97EC-ED969FA33D1D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Timetables.Data", "Timetables.Data\Timetables.Data.csproj", "{2A059A6B-23C4-4122-BBF3-9385BA363F72}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -15,23 +15,23 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{F97CCAEB-3926-47E8-BE86-50F5D064B244}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{F97CCAEB-3926-47E8-BE86-50F5D064B244}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{F97CCAEB-3926-47E8-BE86-50F5D064B244}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{F97CCAEB-3926-47E8-BE86-50F5D064B244}.Release|Any CPU.Build.0 = Release|Any CPU
-		{CA1F6D18-F5B1-4D63-ACC5-2F6BA83D224C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{CA1F6D18-F5B1-4D63-ACC5-2F6BA83D224C}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{CA1F6D18-F5B1-4D63-ACC5-2F6BA83D224C}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{CA1F6D18-F5B1-4D63-ACC5-2F6BA83D224C}.Release|Any CPU.Build.0 = Release|Any CPU
-		{B3EF6024-9B2B-4876-97EC-ED969FA33D1D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{B3EF6024-9B2B-4876-97EC-ED969FA33D1D}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{B3EF6024-9B2B-4876-97EC-ED969FA33D1D}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{B3EF6024-9B2B-4876-97EC-ED969FA33D1D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A3C961D0-EC09-4EA7-9C46-C7DB9F1BA8D2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A3C961D0-EC09-4EA7-9C46-C7DB9F1BA8D2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A3C961D0-EC09-4EA7-9C46-C7DB9F1BA8D2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A3C961D0-EC09-4EA7-9C46-C7DB9F1BA8D2}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2D19BCB1-B7C0-47E6-8A8A-A324E308159A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2D19BCB1-B7C0-47E6-8A8A-A324E308159A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2D19BCB1-B7C0-47E6-8A8A-A324E308159A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2D19BCB1-B7C0-47E6-8A8A-A324E308159A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2A059A6B-23C4-4122-BBF3-9385BA363F72}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2A059A6B-23C4-4122-BBF3-9385BA363F72}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2A059A6B-23C4-4122-BBF3-9385BA363F72}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2A059A6B-23C4-4122-BBF3-9385BA363F72}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
-		SolutionGuid = {EE1C6F2C-830B-4BEB-A40C-DB8D944AA2F4}
+		SolutionGuid = {7A3054F3-6A16-415D-906D-5AD62EF61836}
 	EndGlobalSection
 EndGlobal

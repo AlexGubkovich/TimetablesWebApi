@@ -13,6 +13,7 @@ namespace Timetables.Data.Configuration
     {
         public void Configure(EntityTypeBuilder<Subject> builder)
         {
+            builder.HasIndex(s => s.Name).IsUnique();
             builder.HasOne(p => p.Teacher)
                 .WithMany();
         }

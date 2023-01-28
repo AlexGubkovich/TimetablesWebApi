@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using Microsoft.EntityFrameworkCore;
+using System.ComponentModel.DataAnnotations;
 using System.Net;
 using System.Text.Json;
 
@@ -35,6 +36,15 @@ namespace TimetablesProject.Middlewares
                 case ValidationException validationException:
                     code = HttpStatusCode.BadRequest;
                     result = JsonSerializer.Serialize(validationException.Value);
+                    break;
+                case DbUpdateException dbUpdateException:
+                    if(dbUpdateException.InnerException.Message.Contains("UNIQUE constraint")) {
+                        code = HttpStatusCode.Conflict;
+                        var str = dbUpdateException.InnerException.Message;
+                        str = str.Substring(str.IndexOf("UNIQUE"));
+                        str = str.Substring(0, str.Length - 2);
+                        result = JsonSerializer.Serialize($"Cannot insert duplicate key row in object. {str}");
+                    } 
                     break;
             }
             context.Response.ContentType = "application/json";
