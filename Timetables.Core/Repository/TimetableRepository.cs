@@ -11,10 +11,15 @@ namespace Timetables.Core.Repository
         public TimetableRepository(TimetableDbContext context) : base(context) { }
 
         public async Task<IEnumerable<Timetable>> GetAllTimetables(bool trackChanges) =>
-            await FindAll(trackChanges).ToListAsync();
+            await FindAll(trackChanges)
+                .Include(p => p.Classes)
+                .Include(p => p.Subjects).ThenInclude(p => p.Teacher)
+                .ToListAsync();
 
         public async Task<Timetable> GetTimetableById(int id, bool trackChanges) =>
             await FindByCondition(t => t.Id == id, trackChanges)
+                .Include(p => p.Classes)
+                .Include(p => p.Subjects).ThenInclude(p => p.Teacher)
                 .SingleOrDefaultAsync();
 
         public async Task<IEnumerable<Timetable>> GetTimetablesByGroupId(int groupId, bool trackChanges)

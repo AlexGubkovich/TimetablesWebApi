@@ -8,5 +8,7 @@ namespace Timetables.Core.DTOs.TimetableDTOs
 {
     public class UpdateTimetabeDTO
     {
+        public List<ClassDTO> Classes { get; set; }
+        public List<int> SubjectIds { get; set; }
     }
 }

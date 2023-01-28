@@ -25,7 +25,7 @@ namespace TimetablesProject.Controllers
 
         [HttpGet("byGroup/{groupId:int}")]
         [ResponseCache(Duration = 60, Location = ResponseCacheLocation.Any)]
-        public async Task<ActionResult<Timetable>> GetTimetablesByGroupId(int groupId)
+        public async Task<ActionResult> GetTimetablesByGroupId(int groupId)
         {
             var timetables = await repository.Timetable.GetTimetablesByGroupId(groupId, false);
 
@@ -70,9 +70,32 @@ namespace TimetablesProject.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult> CreateGroup(CreateTimetableDTO createTimetable)
+        public async Task<ActionResult> CreateTimetable(CreateTimetableDTO createTimetable)
         {
+            var groupEntity = await repository.Group.GetGroupById(createTimetable.GroupId, true);
+            if (groupEntity == null)
+            {
+                logger.Information($"Group with id: {createTimetable.GroupId} doesn't exist in the database");
+                return NotFound($"Group with id: {createTimetable.GroupId} doesn't exist in the database");
+            }
+
+            List<Subject> subjectEntities = new();
+            foreach (var subjectId in createTimetable.SubjectIds)
+            {
+                var subjectEntity = await repository.Subject.GetSubjectById(subjectId, true);
+                if(subjectEntity == null)
+                {
+                    logger.Information($"Subject with id: {subjectId} doesn't exist in the database");
+                    return NotFound($"Subject with id: {subjectId} doesn't exist in the database");
+                }
+
+                subjectEntities.Add(subjectEntity);
+            }
+
             var timetableEntity = mapper.Map<Timetable>(createTimetable);
+            timetableEntity.Group = groupEntity;
+            timetableEntity.Subjects = subjectEntities;
+
             await repository.Timetable.CreateTimetable(timetableEntity);
             await repository.SaveAsync();
 
