@@ -11,10 +11,13 @@ namespace Timetables.Core.Repository
         public SubjectRepository(TimetableDbContext context) : base(context) { }
 
         public async Task<IEnumerable<Subject>> GetAllSubjects(bool trackChanges) =>
-            await FindAll(trackChanges).ToListAsync();
+            await FindAll(trackChanges)
+            .Include(s => s.Teacher)
+            .ToListAsync();
 
         public async Task<Subject> GetSubjectById(int id, bool trackChanges) =>
             await FindByCondition(s => s.Id == id, trackChanges)
+                .Include(s => s.Teacher)
                 .SingleOrDefaultAsync();
 
         public async Task CreateSubject(Subject subject) => await Create(subject);

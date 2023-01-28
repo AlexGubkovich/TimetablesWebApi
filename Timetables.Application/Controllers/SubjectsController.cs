@@ -54,7 +54,15 @@ namespace TimetablesProject.Controllers
         [HttpPost]
         public async Task<ActionResult> CreateSubject(CreateSubjectDTO createSubject)
         {
+            var teacherEntity = await repository.Teacher.GetTeacherById(createSubject.TeacherId, true);
+            if(teacherEntity == null)
+            {
+                return NotFound($"Teacher with id: {createSubject.TeacherId} doesn't exist in the database");
+            }
+
             var subjectEntity = mapper.Map<Subject>(createSubject);
+            subjectEntity.Teacher = teacherEntity;
+
             await repository.Subject.CreateSubject(subjectEntity);
             await repository.SaveAsync();
 
@@ -73,7 +81,15 @@ namespace TimetablesProject.Controllers
                 return NotFound();
             }
 
+            var teacherEntity = await repository.Teacher.GetTeacherById(updateSubject.TeacherId, true);
+            if (teacherEntity == null)
+            {
+                return NotFound($"Teacher with id: {updateSubject.TeacherId} doesn't exist in the database");
+            }
+
             mapper.Map(updateSubject, subjectEntity);
+            subjectEntity.Teacher = teacherEntity;
+
             await repository.SaveAsync();
 
             return Ok();
