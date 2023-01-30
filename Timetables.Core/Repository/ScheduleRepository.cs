@@ -75,7 +75,7 @@ namespace Timetables.Core.Repository
                 return new RepositoryResponse { Success = false, Error = "There is no such schedule" };
             }
 
-            await ChangeIsActive(scheduleCurrent, patchSchedule.IsActive);
+            await ChangeIsActive(scheduleCurrent, patchSchedule.IsActive.Value);
 
             return new RepositoryResponse { Success = true };
         }

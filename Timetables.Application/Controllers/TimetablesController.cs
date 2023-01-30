@@ -22,14 +22,14 @@ namespace TimetablesProject.Controllers
         }
 
         [HttpGet("byGroup/{groupId:int}")]
-        [ResponseCache(Duration = 60, Location = ResponseCacheLocation.Any)]
+        //[ResponseCache(Duration = 60, Location = ResponseCacheLocation.Any)]
         public async Task<ActionResult> GetTimetablesByGroupId(int groupId)
         {
             var timetables = await repository.Timetable.GetTimetablesByGroupId(groupId, false);
 
             if (timetables.Any())
             {
-                IEnumerable<TimetableDTO> timetablesDTO = mapper.Map<IEnumerable<TimetableDTO>>(timetables);
+                var timetablesDTO = mapper.Map<IEnumerable<TimetableSubjClassDTO>>(timetables);
 
                 return Ok(timetablesDTO);
             }
