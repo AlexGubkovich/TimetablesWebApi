@@ -72,29 +72,29 @@ namespace TimetablesProject.Controllers
         [HttpPost]
         public async Task<ActionResult> CreateTimetable(CreateTimetableDTO createTimetable)
         {
-            var groupEntity = await repository.Group.GetGroupById(createTimetable.GroupId, true);
+            var groupEntity = await repository.Group.GetGroupById(createTimetable.GroupId.Value, true);
             if (groupEntity == null)
             {
                 logger.Information($"Group with id: {createTimetable.GroupId} doesn't exist in the database");
                 return NotFound($"Group with id: {createTimetable.GroupId} doesn't exist in the database");
             }
 
-            List<Subject> subjectEntities = new();
+            var subjectEntities = await repository.Subject.GetSubjectsByIds(createTimetable.SubjectIds, true);
             foreach (var subjectId in createTimetable.SubjectIds)
             {
-                var subjectEntity = await repository.Subject.GetSubjectById(subjectId, true);
-                if(subjectEntity == null)
+                if (!subjectEntities.Any(s => s.Id == subjectId))
                 {
                     logger.Information($"Subject with id: {subjectId} doesn't exist in the database");
                     return NotFound($"Subject with id: {subjectId} doesn't exist in the database");
                 }
-
-                subjectEntities.Add(subjectEntity);
             }
+
+            var classes = mapper.Map<IEnumerable<Class>>(createTimetable.Classes);
 
             var timetableEntity = mapper.Map<Timetable>(createTimetable);
             timetableEntity.Group = groupEntity;
             timetableEntity.Subjects = subjectEntities;
+            timetableEntity.Classes = classes;
 
             await repository.Timetable.CreateTimetable(timetableEntity);
             await repository.SaveAsync();
@@ -115,7 +115,18 @@ namespace TimetablesProject.Controllers
                 return NotFound();
             }
 
+            var subjectEntities = await repository.Subject.GetSubjectsByIds(updateTimetable.SubjectIds, true);
+            foreach (var subjectId in updateTimetable.SubjectIds)
+            {
+                if (!subjectEntities.Any(s => s.Id == subjectId))
+                {
+                    logger.Information($"Subject with id: {subjectId} doesn't exist in the database");
+                    return NotFound($"Subject with id: {subjectId} doesn't exist in the database");
+                }
+            }
+
             mapper.Map(updateTimetable, timetableEntity);
+            timetableEntity.Subjects = subjectEntities;
             await repository.SaveAsync();
 
             return Ok();
@@ -124,7 +135,7 @@ namespace TimetablesProject.Controllers
         [HttpDelete("{id:int}")]
         public async Task<ActionResult> DeleteTimetable(int id)
         {
-            var timetable = await repository.Timetable.GetTimetableById(id, false);
+            var timetable = await repository.Timetable.GetTimetableById(id, true);
             if(timetable == null)
             {
                 logger.Information($"Timetable with id: {id} doesn't exist in the database");

@@ -31,8 +31,8 @@ builder.Services.ConfigureResponseCaching();
 
 builder.Services.AddCors(o =>
 {
-    o.AddPolicy("AllowAll", builder =>
-        builder.AllowAnyOrigin()
+    o.AddPolicy("AllowAll", corsPolicyBuilder =>
+        corsPolicyBuilder.AllowAnyOrigin()
             .AllowAnyMethod()
             .AllowAnyHeader());
 });
@@ -62,7 +62,7 @@ app.UseAuthorization();
 
 app.MapControllers();
 
-//app.Services.GenerateSeedTimetableDataAsync().Wait();
+app.Services.GenerateSeedTimetableDataAsync().Wait();
 
 app.Run();
 

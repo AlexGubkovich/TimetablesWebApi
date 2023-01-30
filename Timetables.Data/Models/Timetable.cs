@@ -9,8 +9,8 @@
         public int GroupId { get; set; }
         public Group Group { get; set; }
 
-        public List<Class> Classes { get; set; }
+        public IEnumerable<Class> Classes { get; set; }
 
-        public List<Subject> Subjects { get; set; }
+        public IEnumerable<Subject> Subjects { get; set; }
     }
 }

@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using System.Linq;
 using Timetables.Core.IRepository;
 using Timetables.Core.Repository.Base;
 using Timetables.Data;
@@ -19,6 +20,11 @@ namespace Timetables.Core.Repository
             await FindByCondition(s => s.Id == id, trackChanges)
                 .Include(s => s.Teacher)
                 .SingleOrDefaultAsync();
+
+        public async Task<IEnumerable<Subject>> GetSubjectsByIds(List<int> subjectsIds, bool trackChanges) =>
+            await FindByCondition(s => subjectsIds.Contains(s.Id), trackChanges)
+                .Include(s => s.Teacher)
+                .ToListAsync();
 
         public async Task CreateSubject(Subject subject) => await Create(subject);
 
