@@ -10,7 +10,7 @@ namespace Timetables.Core.DTOs.TeacherDTOs
     public class UpdateTeacherDTO
     {
         [Required]
-        [MaxLength(255)]
+        [MaxLength(50)]
         public string FullName { get; set; } = null!;
     }
 }

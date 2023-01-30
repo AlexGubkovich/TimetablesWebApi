@@ -38,7 +38,6 @@ namespace Timetables.Core.Configuration
             CreateMap<UpdateTimetabeDTO, Timetable>();
 
             //Schedule
-            CreateMap<Schedule, ScheduleDTO>().ReverseMap();
             CreateMap<Schedule, ScheduleLessonsDTO>().ReverseMap();
             CreateMap<CreateScheduleDTO, Schedule>();
             CreateMap<UpdateScheduleDTO, Schedule>();

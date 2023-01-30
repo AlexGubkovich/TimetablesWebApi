@@ -1,7 +1,10 @@
-﻿namespace Timetables.Core.DTOs
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace Timetables.Core.DTOs
 {
     public class ClassDTO
     {
-        public int Number { get; set; }
+        [Required]
+        public int? Number { get; set; }
     }
 }

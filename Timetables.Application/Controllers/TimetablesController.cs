@@ -1,7 +1,5 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using System.Xml;
 using Timetables.Core.DTOs.TimetableDTOs;
 using Timetables.Core.IRepository.Base;
 using Timetables.Data.Models;

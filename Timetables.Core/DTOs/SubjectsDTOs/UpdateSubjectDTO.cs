@@ -14,6 +14,7 @@ namespace Timetables.Core.DTOs.SubjectsDTOs
         [MaxLength(255)]
         public string Name { get; set; } = null!;
 
-        public int TeacherId { get; set; }
+        [Required]
+        public int? TeacherId { get; set; }
     }
 }

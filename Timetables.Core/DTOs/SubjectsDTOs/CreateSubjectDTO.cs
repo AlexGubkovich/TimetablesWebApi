@@ -1,11 +1,14 @@
-﻿using Timetables.Core.DTOs.TeacherDTOs;
+﻿using System.ComponentModel.DataAnnotations;
+using Timetables.Core.DTOs.TeacherDTOs;
 
 namespace Timetables.Core.DTOs.SubjectsDTOs
 {
     public class CreateSubjectDTO
     {
+        [Required]
         public string Name { get; set; } = null!;
 
-        public int TeacherId { get; set; }
+        [Required]
+        public int? TeacherId { get; set; }
     }
 }
