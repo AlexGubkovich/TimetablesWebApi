@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Timetables.Core.AuthService;
 using Timetables.Core.DTOs.UserDTOs;
 using ILogger = Serilog.ILogger;
 
@@ -14,16 +15,19 @@ namespace Timetables.Application.Controllers
         private readonly IMapper mapper;
         private readonly UserManager<IdentityUser> userManager;
         private readonly RoleManager<IdentityRole> roleManager;
+        private readonly IAuthenticationManager authManager;
 
         public AuthenticationController(ILogger logger,
             IMapper mapper, 
             UserManager<IdentityUser> userManager, 
-            RoleManager<IdentityRole> roleManager)
+            RoleManager<IdentityRole> roleManager,
+            IAuthenticationManager authManager)
         {
             this.logger = logger;
             this.mapper = mapper;
             this.userManager = userManager;
             this.roleManager = roleManager;
+            this.authManager = authManager;
         }
 
         [HttpPost]
@@ -54,6 +58,18 @@ namespace Timetables.Application.Controllers
             }
 
             return StatusCode(201);
+        }
+
+        [HttpPost("login")]
+        public async Task<ActionResult> Authenticate(UserForAuthenticationDTO user)
+        {
+            if(!await authManager.ValidateUser(user))
+            {
+                logger.Information($"{nameof(Authenticate)}: Authentication failed. Wrong user name or password.");
+                return Unauthorized();
+            }
+
+            return Ok(new { Token = await authManager.CreateToken() });
         }
 
     }
