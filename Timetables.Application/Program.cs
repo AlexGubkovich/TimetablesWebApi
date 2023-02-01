@@ -21,6 +21,9 @@ builder.Services.ConfigureDbContext(builder.Configuration, builder.Environment);
 builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 builder.Services.AddScoped<IScheduleRepository, ScheduleRepository>();
 
+builder.Services.AddAuthentication();
+builder.Services.ConfigureIdentity();
+
 builder.Services.ConfigureAutoMapper();
 
 builder.Host.ConfigureSerilog();
@@ -58,6 +61,7 @@ app.UseCors("AllowAll");
 
 app.UseResponseCaching();
 
+app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllers();

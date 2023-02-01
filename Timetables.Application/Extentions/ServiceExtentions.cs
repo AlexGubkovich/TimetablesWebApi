@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 using Serilog;
 using Timetables.Core.Configuration;
 using Timetables.Data;
@@ -14,16 +15,6 @@ namespace Timetables.Application.Extentions
                    x.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore);
         }
 
-        public static void ConfigureSerilog(this IHostBuilder host)
-        {
-            host.UseSerilog((ctx, lc) => lc
-                .WriteTo.Console());
-        }
-
-        public static void ConfigureResponseCaching(this IServiceCollection services) =>
-            services.AddResponseCaching();
-
-
         public static void ConfigureDbContext(this IServiceCollection services, IConfiguration config, IWebHostEnvironment env)
         {
             services.AddDbContext<TimetableDbContext>(
@@ -37,6 +28,23 @@ namespace Timetables.Application.Extentions
                     }
                 });
         }
+        
+        public static void ConfigureIdentity(this IServiceCollection services)
+        {
+            var builder = services.AddIdentityCore<IdentityUser>(o =>
+            {
+                o.Password.RequireDigit = true;
+                o.Password.RequireLowercase = false;
+                o.Password.RequireUppercase = false;
+                o.Password.RequireNonAlphanumeric= false;
+                o.Password.RequiredLength = 8;
+                o.User.RequireUniqueEmail = true;
+            });
+
+            builder = new IdentityBuilder(builder.UserType, typeof(IdentityRole), builder.Services);
+            builder.AddEntityFrameworkStores<TimetableDbContext>()
+                .AddDefaultTokenProviders();
+        }
 
         public static void ConfigureSwagger(this IServiceCollection services)
         {
@@ -48,5 +56,15 @@ namespace Timetables.Application.Extentions
         {
             services.AddAutoMapper(typeof(MapperInitilizer));
         }
+
+        public static void ConfigureSerilog(this IHostBuilder host)
+        {
+            host.UseSerilog((ctx, lc) => lc
+                .WriteTo.Console());
+        }
+
+        public static void ConfigureResponseCaching(this IServiceCollection services) =>
+            services.AddResponseCaching();
+
     }
 }

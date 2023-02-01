@@ -1,10 +1,12 @@
 using AutoMapper;
+using Microsoft.AspNetCore.Identity;
 using Timetables.Core.DTOs;
 using Timetables.Core.DTOs.GroupDTOs;
 using Timetables.Core.DTOs.ScheduleDTOs;
 using Timetables.Core.DTOs.SubjectsDTOs;
 using Timetables.Core.DTOs.TeacherDTOs;
 using Timetables.Core.DTOs.TimetableDTOs;
+using Timetables.Core.DTOs.UserDTOs;
 using Timetables.Data.Models;
 
 namespace Timetables.Core.Configuration
@@ -44,6 +46,9 @@ namespace Timetables.Core.Configuration
             CreateMap<Schedule, ScheduleLessonsDTO>().ReverseMap();
             CreateMap<CreateScheduleDTO, Schedule>();
             CreateMap<UpdateScheduleDTO, Schedule>();
+
+            //IsentityUser
+            CreateMap<UserForRegistrationDTO, IdentityUser>();
 
 
             //Others

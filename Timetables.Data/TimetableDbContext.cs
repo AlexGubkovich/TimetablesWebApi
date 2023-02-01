@@ -1,10 +1,12 @@
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using Timetables.Data.Configuration;
 using Timetables.Data.Models;
 
 namespace Timetables.Data
 {
-    public class TimetableDbContext : DbContext
+    public class TimetableDbContext : IdentityDbContext<IdentityUser>
     {
         public DbSet<Timetable> Timetables { get; set; }
         public DbSet<Group> Groups { get; set; }
@@ -24,6 +26,7 @@ namespace Timetables.Data
             modelBuilder.ApplyConfiguration(new SubjectConfiguration());
             modelBuilder.ApplyConfiguration(new GroupConfiguration());
             modelBuilder.ApplyConfiguration(new TimetableConfiguration());
+            modelBuilder.ApplyConfiguration(new RoleConfiguration());
 
             base.OnModelCreating(modelBuilder);
         }
