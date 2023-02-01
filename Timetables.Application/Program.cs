@@ -1,5 +1,6 @@
 ﻿using Serilog;
 using Timetables.Application.Extentions;
+using Timetables.Core.AuthService;
 using Timetables.Core.IRepository;
 using Timetables.Core.IRepository.Base;
 using Timetables.Core.Repository;
@@ -20,6 +21,7 @@ builder.Services.ConfigureDbContext(builder.Configuration, builder.Environment);
 
 builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 builder.Services.AddScoped<IScheduleRepository, ScheduleRepository>();
+builder.Services.AddScoped<IAuthenticationManager, AuthenticationManager>();
 
 builder.Services.ConfigureIdentity();
 builder.Services.ConfigureJWT(builder.Configuration);

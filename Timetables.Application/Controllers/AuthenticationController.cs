@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Timetables.Core.AuthService;
@@ -31,6 +32,7 @@ namespace Timetables.Application.Controllers
         }
 
         [HttpPost]
+        [Authorize(Roles = "Administrator")]
         public async Task<ActionResult> RegisterUser(UserForRegistrationDTO registrationDTO)
         {
             var user = mapper.Map<IdentityUser>(registrationDTO);
