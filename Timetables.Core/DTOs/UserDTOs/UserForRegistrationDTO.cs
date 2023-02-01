@@ -14,5 +14,7 @@ namespace Timetables.Core.DTOs.UserDTOs
 
         [Required(ErrorMessage = "Password is required")]
         public string Password { get; set; }
+
+        public ICollection<string> Roles { get; set; }
     }
 }

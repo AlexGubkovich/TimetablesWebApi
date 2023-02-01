@@ -38,11 +38,12 @@ namespace Timetables.Application.Extentions
                 o.Password.RequireUppercase = false;
                 o.Password.RequireNonAlphanumeric= false;
                 o.Password.RequiredLength = 8;
-                o.User.RequireUniqueEmail = true;
+                o.User.RequireUniqueEmail = false;
             });
 
             builder = new IdentityBuilder(builder.UserType, typeof(IdentityRole), builder.Services);
             builder.AddEntityFrameworkStores<TimetableDbContext>()
+                .AddRoles<IdentityRole>()
                 .AddDefaultTokenProviders();
         }
 

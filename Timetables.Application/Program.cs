@@ -66,7 +66,7 @@ app.UseAuthorization();
 
 app.MapControllers();
 
-app.Services.GenerateSeedTimetableDataAsync().Wait();
+//app.Services.GenerateSeedTimetableDataAsync().Wait();
 
 app.Run();
 
