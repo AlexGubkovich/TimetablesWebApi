@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Timetables.Core.DTOs.TimetableDTOs;
 using Timetables.Core.IRepository.Base;
@@ -7,7 +8,7 @@ using Timetables.Data.Models;
 namespace TimetablesProject.Controllers
 {
     [Route("api/[controller]")]
-    [ApiController]
+    [ApiController, Authorize]
     public class TimetablesController : ControllerBase
     {
         private readonly IMapper mapper;
@@ -22,7 +23,8 @@ namespace TimetablesProject.Controllers
         }
 
         [HttpGet("byGroup/{groupId:int}")]
-        [ResponseCache(Duration = 60, Location = ResponseCacheLocation.Any)]
+        [ResponseCache(Duration = 20, Location = ResponseCacheLocation.Any)]
+        [AllowAnonymous]
         public async Task<ActionResult> GetTimetablesByGroupId(int groupId)
         {
             var timetables = await repository.Timetable.GetTimetablesByGroupId(groupId, false);

@@ -21,8 +21,8 @@ builder.Services.ConfigureDbContext(builder.Configuration, builder.Environment);
 builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 builder.Services.AddScoped<IScheduleRepository, ScheduleRepository>();
 
-builder.Services.AddAuthentication();
 builder.Services.ConfigureIdentity();
+builder.Services.ConfigureJWT(builder.Configuration);
 
 builder.Services.ConfigureAutoMapper();
 

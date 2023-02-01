@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Timetables.Core.DTOs.ScheduleDTOs;
 using Timetables.Core.IRepository;
@@ -8,7 +9,7 @@ using Timetables.Data.Models;
 namespace TimetablesProject.Controllers
 {
     [Route("api/[controller]")]
-    [ApiController]
+    [ApiController, Authorize]
     public class SchedulesController : ControllerBase
     {
         private readonly IMapper mapper;
@@ -25,6 +26,20 @@ namespace TimetablesProject.Controllers
             this.logger = logger;
         }
 
+        [HttpGet("active/lessons")]
+        [AllowAnonymous]
+        public async Task<ActionResult<ScheduleLessonsDTO>> GetActiveScheduleLessons()
+        {
+            var schedule = await repository.GetActiveAsync();
+
+            if (schedule == null)
+            {
+                return NoContent();
+            }
+
+            return Ok(mapper.Map<ScheduleLessonsDTO>(schedule));
+        }
+
         [HttpGet(Name = "All")]
         public async Task<ActionResult<List<Schedule>>> GetSchedules()
         {
@@ -36,19 +51,6 @@ namespace TimetablesProject.Controllers
             }
 
             return Ok(schedules);
-        }
-
-        [HttpGet("active/lessons")]
-        public async Task<ActionResult<ScheduleLessonsDTO>> GetActiveScheduleLessons()
-        {
-            var schedule = await repository.GetActiveAsync();
-
-            if (schedule == null)
-            {
-                return NoContent();
-            }
-
-            return Ok(mapper.Map<ScheduleLessonsDTO>(schedule));
         }
 
         [HttpGet("{id:int}")]

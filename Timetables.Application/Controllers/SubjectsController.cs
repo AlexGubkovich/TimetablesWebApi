@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Timetables.Core.DTOs.SubjectsDTOs;
 using Timetables.Core.IRepository.Base;
@@ -7,7 +8,7 @@ using Timetables.Data.Models;
 namespace TimetablesProject.Controllers
 {
     [Route("api/[controller]")]
-    [ApiController]
+    [ApiController, Authorize]
     public class SubjectsController : Controller
     {
         private readonly IMapper mapper;

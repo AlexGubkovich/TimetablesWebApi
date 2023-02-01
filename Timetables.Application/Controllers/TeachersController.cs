@@ -1,20 +1,22 @@
 ﻿using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Timetables.Core.DTOs.TeacherDTOs;
 using Timetables.Core.IRepository.Base;
 using Timetables.Data.Models;
+using ILogger = Serilog.ILogger;
 
 namespace TimetablesProject.Controllers
 {
     [Route("api/[controller]")]
-    [ApiController]
+    [ApiController, Authorize]
     public class TeachersController : Controller
     {
         private readonly IMapper mapper;
         private readonly IUnitOfWork repository;
-        private readonly Serilog.ILogger logger;
+        private readonly ILogger logger;
 
-        public TeachersController(IUnitOfWork repository, IMapper mapper, Serilog.ILogger logger)
+        public TeachersController(IUnitOfWork repository, IMapper mapper, ILogger logger)
         {
             this.mapper = mapper;
             this.repository = repository;

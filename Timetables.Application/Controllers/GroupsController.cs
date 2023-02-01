@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Serilog;
 using Timetables.Core.DTOs.GroupDTOs;
@@ -8,7 +9,7 @@ using Timetables.Data.Models;
 namespace TimetablesProject.Controllers
 {
     [Route("api/[controller]")]
-    [ApiController]
+    [ApiController, Authorize]
     public class GroupsController : Controller
     {
         private readonly IMapper mapper;
@@ -23,6 +24,7 @@ namespace TimetablesProject.Controllers
         }
 
         [HttpGet]
+        [AllowAnonymous]
         public async Task<ActionResult> GetGroups()
         {
             var groups = await repository.Group.GetAllGroups(trackChanges: false);
