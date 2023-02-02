@@ -43,5 +43,12 @@
   <ItemGroup>
     <Folder Include="App_Database\" />
   </ItemGroup>
+	
+
+  <ItemGroup>
+    <None Update="App_Database\TimetablesDatabase.sqlite">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
 
 </Project>
